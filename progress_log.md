@@ -119,3 +119,29 @@
 **Verification Result:**
 - Static compilation passes. The application operates with caching initialized.
 ---
+
+## Steps 7, 8 & 9 (Combined) — Data Layer Services
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Defined `GateStatusModel` and related status Enum.
+- Integrated `GateService` to merge Realtime DB and App Config data into a synchronized reactive stream via RxDart.
+- Added strict transition validity rules (OPEN->ALERT->CLOSED->OPEN) directly into client side (Spark temporary workaround).
+- Constructed `NotificationService` configured with an HTTP wrapper querying the FCM Legacy/v1 API to dispatch notifications securely bypassing Cloud Functions.
+
+**Files Created:**
+- `lib/models/gate_status.dart` 
+- `lib/services/gate_service.dart`
+- `lib/services/notification_service.dart`
+- `lib/config/secrets.dart`
+
+**Files Modified:**
+- `pubspec.yaml` (Added `http` & `rxdart`)
+
+**Packages Installed:**
+- `http`, `rxdart`
+
+**Verification Result:**
+- Models structurally sound. Code static analysis clean. Data architecture ready to plug into UI.
+---

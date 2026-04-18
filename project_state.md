@@ -1,4 +1,4 @@
-- Last Completed Step: Step 3B: Direct Firebase Write Setup
-- Implemented Features: Enabled offline persistence for Direct Client Writes
-- Pending Next Step: Step 7: GateStatus Model
-- Known Issues / Blockers: None
+- Last Completed Step: Steps 7, 8 & 9 Data Layer
+- Implemented Features: Local FCM dispatch trigger, Firebase DB write wrapper, Validation models, Notification bindings, RxDart state manager
+- Pending Next Step: Step 10: GateStatusCard Widget
+- Known Issues / Blockers: You must paste your real Server Key into secrets.dart whenever you want push notifications to work.
