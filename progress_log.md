@@ -191,3 +191,24 @@
 **Verification Result:**
 - Compiled flawlessly. Animations and widget structures are bound to `AppTheme` references safely.
 ---
+
+## Step 11 — OfflineBanner Widget
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Created the top-level `OfflineBanner` UI component strictly matching the #37474F design specs.
+- Linked UI size adjustments into a 300ms `AnimatedContainer` responding to the `isOffline` boolean property.
+
+**Files Created:**
+- `lib/widgets/offline_banner.dart`
+
+**Files Modified:**
+- None.
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Widget logic encapsulates gracefully shrinking height to zero without overflow layout exceptions.
+---

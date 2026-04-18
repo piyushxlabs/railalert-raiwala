@@ -20,3 +20,5 @@ Steps 7, 8, 9 — Adopted the `http` package and implemented a manual POST opera
 Step 9B — Evaluated `SharedPreferences` locally before initializing `runApp()` to guarantee zero flickering or artifacting on app boot. Routing is strictly conditional to either the Dashboard or the Disclaimer.
 
 Step 10 — Built the core UI `GateStatusCard` utilizing the `shimmer` library to provide modern loading skeletons. Since the 'ALERT' mode dictates a looped scaling effect, utilizing an `AnimationController` required standard explicit state management mapping tied directly to object properties (`oldWidget` vs `newWidget` evaluation) to prevent memory leaks when navigating or re-rendering states via the active stream. Used `FittedBox` on the explicitly huge Header-sized labels to avoid rendering overflows on narrow mobile displays.
+
+Step 11 — Wrapped the interior components of `OfflineBanner` within a fixed-height box inside a `SingleChildScrollView(physics: NeverScrollableScrollPhysics())` child wrapper. This protects against the infamous bottom overflow rendering error that `AnimatedContainer` causes globally when collapsing to height 0.0 with explicitly sized children.
