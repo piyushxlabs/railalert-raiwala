@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Commuter Dashboard - RailAlert Raiwala</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#1a1c1c",
+                      "on-error": "#ffffff",
+                      "outline": "#8f7066",
+                      "surface-dim": "#dadada",
+                      "on-surface": "#1a1c1c",
+                      "primary-container": "#cd4700",
+                      "outline-variant": "#e3bfb2",
+                      "surface-container-highest": "#e2e2e2",
+                      "inverse-on-surface": "#f1f1f1",
+                      "surface-tint": "#a83900",
+                      "on-secondary-fixed-variant": "#7b2f0e",
+                      "on-tertiary-container": "#fefcff",
+                      "tertiary": "#005ab7",
+                      "on-tertiary-fixed-variant": "#00458f",
+                      "secondary-container": "#ff946c",
+                      "primary-fixed": "#ffdbcf",
+                      "on-secondary-fixed": "#380d00",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "surface-container-low": "#f3f3f3",
+                      "on-primary-fixed": "#380d00",
+                      "on-primary": "#ffffff",
+                      "primary-fixed-dim": "#ffb59a",
+                      "primary": "#a43700",
+                      "on-primary-fixed-variant": "#802a00",
+                      "inverse-primary": "#ffb59a",
+                      "error-container": "#ffdad6",
+                      "surface": "#f9f9f9",
+                      "surface-bright": "#f9f9f9",
+                      "error": "#ba1a1a",
+                      "secondary-fixed": "#ffdbcf",
+                      "on-primary-container": "#fffbff",
+                      "surface-variant": "#e2e2e2",
+                      "on-tertiary-fixed": "#001b3f",
+                      "on-surface-variant": "#5a4138",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary": "#994523",
+                      "surface-container": "#eeeeee",
+                      "background": "#f9f9f9",
+                      "tertiary-fixed-dim": "#abc7ff",
+                      "on-secondary": "#ffffff",
+                      "surface-container-high": "#e8e8e8",
+                      "inverse-surface": "#2f3131",
+                      "tertiary-container": "#0072e4",
+                      "tertiary-fixed": "#d7e2ff",
+                      "on-secondary-container": "#762c0a",
+                      "secondary-fixed-dim": "#ffb59a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Public Sans"
+                      ],
+                      "body": [
+                              "Public Sans"
+                      ],
+                      "label": [
+                              "Public Sans"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+          body {
+              font-family: 'Public Sans', sans-serif;
+          }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-background antialiased min-h-screen flex items-center justify-center p-4">
+<!-- Mobile Device Frame -->
+<div class="relative mx-auto border-gray-800 dark:border-gray-800 bg-gray-800 border-[14px] rounded-[2.5rem] h-[850px] w-[390px] shadow-2xl overflow-hidden flex flex-col">
+<div class="w-[148px] h-[18px] bg-gray-800 top-0 rounded-b-[1rem] left-1/2 -translate-x-1/2 absolute z-50"></div>
+<!-- App Container -->
+<div class="bg-surface w-full h-full relative flex flex-col overflow-y-auto">
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-gray-900/80 backdrop-blur-xl font-public-sans tracking-tight docked full-width top-0 shadow-sm dark:shadow-none flex justify-between items-center px-6 py-4 w-full z-40 sticky top-0">
+<button class="text-on-surface-variant dark:text-gray-400 hover:bg-orange-50 dark:hover:bg-gray-800 transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="train">train</span>
+</button>
+<h1 class="text-xl font-black tracking-tighter text-orange-900 dark:text-orange-500">RailAlert</h1>
+<button class="text-on-surface-variant dark:text-gray-400 hover:bg-orange-50 dark:hover:bg-gray-800 transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center p-6 bg-surface">
+<!-- Station Title Area -->
+<div class="text-center mb-8">
+<h2 class="text-on-surface text-xl font-bold tracking-tight">Raiwala Crossing</h2>
+<p class="text-on-surface-variant text-sm mt-1">Live Status Dashboard</p>
+</div>
+<!-- Status Card (Bento/Glassmorphism inspired) -->
+<div class="w-full max-w-[320px] bg-surface-container-lowest rounded-xl shadow-[0_8px_40px_rgba(26,28,28,0.08)] overflow-hidden relative border-none">
+<!-- Decorative background layer instead of solid border -->
+<div class="absolute inset-0 bg-gradient-to-br from-[#E8F5E9] to-surface-container-lowest opacity-50 pointer-events-none"></div>
+<div class="p-8 flex flex-col items-center justify-center relative z-10">
+<!-- Icon Container with Tonal Stacking -->
+<div class="w-24 h-24 rounded-full bg-[#E8F5E9] flex items-center justify-center mb-6 shadow-[0_4px_20px_rgba(46,125,50,0.15)]">
+<span class="material-symbols-outlined text-5xl text-[#2E7D32]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<!-- Status Typography -->
+<h3 class="text-4xl font-black tracking-tighter text-[#2E7D32] mb-2 text-center leading-tight">GATE<br/>OPEN</h3>
+<!-- Metadata / Subtitle -->
+<div class="bg-surface-container-low px-4 py-2 rounded-lg mt-2 w-full text-center">
+<p class="text-on-surface-variant text-sm font-medium tracking-wide">Road is clear — proceed normally</p>
+</div>
+</div>
+<!-- Footer -->
+<div class="bg-surface-container-low py-3 px-6 text-center w-full border-t border-surface-dim/20">
+<p class="text-on-surface-variant text-xs flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="update">update</span>
+                            Updated 2 min ago
+                        </p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+</div>
+</div>
+</body></html>

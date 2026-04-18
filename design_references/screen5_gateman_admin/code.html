@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gateman Control - Raiwala</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#f3f3f3",
+                      "secondary-fixed-dim": "#ffb59a",
+                      "background": "#f9f9f9",
+                      "primary": "#a43700",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#cd4700",
+                      "tertiary-container": "#0072e4",
+                      "surface-dim": "#dadada",
+                      "tertiary": "#005ab7",
+                      "outline-variant": "#e3bfb2",
+                      "on-primary-fixed": "#380d00",
+                      "surface-container": "#eeeeee",
+                      "on-secondary-fixed": "#380d00",
+                      "primary-fixed-dim": "#ffb59a",
+                      "secondary": "#994523",
+                      "surface": "#f9f9f9",
+                      "on-surface": "#1a1c1c",
+                      "on-tertiary": "#ffffff",
+                      "outline": "#8f7066",
+                      "inverse-surface": "#2f3131",
+                      "surface-variant": "#e2e2e2",
+                      "on-tertiary-fixed": "#001b3f",
+                      "primary-fixed": "#ffdbcf",
+                      "surface-container-high": "#e8e8e8",
+                      "on-primary-container": "#fffbff",
+                      "on-surface-variant": "#5a4138",
+                      "on-tertiary-fixed-variant": "#00458f",
+                      "tertiary-fixed-dim": "#abc7ff",
+                      "on-primary-fixed-variant": "#802a00",
+                      "on-error-container": "#93000a",
+                      "inverse-on-surface": "#f1f1f1",
+                      "on-tertiary-container": "#fefcff",
+                      "secondary-fixed": "#ffdbcf",
+                      "error": "#ba1a1a",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#1a1c1c",
+                      "on-primary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "inverse-primary": "#ffb59a",
+                      "surface-tint": "#a83900",
+                      "on-secondary-container": "#762c0a",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#7b2f0e",
+                      "secondary-container": "#ff946c",
+                      "tertiary-fixed": "#d7e2ff",
+                      "surface-bright": "#f9f9f9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Public Sans"
+                      ],
+                      "body": [
+                              "Public Sans"
+                      ],
+                      "label": [
+                              "Public Sans"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+          body { font-family: 'Public Sans', sans-serif; }
+          .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          }
+          .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+          }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface-container-low min-h-screen flex items-center justify-center p-4">
+<!-- Mobile Device Frame Wrapper -->
+<div class="relative mx-auto w-full max-w-[400px] h-[850px] bg-black rounded-[3rem] p-3 shadow-2xl overflow-hidden border-8 border-black ring-1 ring-white/10">
+<!-- Screen Content -->
+<div class="bg-surface-container-lowest w-full h-full rounded-[2.25rem] overflow-hidden flex flex-col relative">
+<!-- System Status Bar Mock -->
+<div class="h-8 w-full flex justify-between items-center px-6 pt-2 text-on-surface text-xs font-medium z-50">
+<span>09:41</span>
+<div class="flex gap-2 items-center">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[14px]">wifi</span>
+<span class="material-symbols-outlined text-[14px]">battery_full</span>
+</div>
+</div>
+<!-- Main Application Canvas (No Nav Bars to prioritize task) -->
+<main class="flex-1 flex flex-col px-6">
+<!-- Top Section -->
+<header class="pt-12 pb-8 flex flex-col gap-3">
+<h1 class="font-headline font-bold text-3xl tracking-tight text-on-surface">Gateman Control</h1>
+<div class="inline-flex items-center gap-2 bg-tertiary-container/10 px-3 py-1.5 rounded-full w-fit">
+<div class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+<span class="font-label text-sm font-semibold tracking-wide text-tertiary">GATE OPEN</span>
+</div>
+</header>
+<!-- Middle Content (Vertically Centered Action) -->
+<div class="flex-1 flex flex-col justify-center pb-12">
+<!-- Contextual Warning -->
+<!-- Primary Action Button (The Saffron Hero) -->
+<button class="w-full h-40 rounded-3xl bg-gradient-to-br from-primary to-primary-container shadow-[0_8px_40px_rgba(164,55,0,0.2)] flex flex-col items-center justify-center gap-3 transition-transform active:scale-95 group">
+<span class="material-symbols-outlined fill text-on-primary text-5xl">warning</span>
+<div class="flex flex-col items-center gap-1">
+<span class="font-headline font-bold text-2xl text-on-primary tracking-tight">TRAIN COMING</span>
+<span class="font-body text-on-primary/75 text-sm">Tap when train is ~10 min away</span>
+</div>
+</button>
+<!-- Secondary Info Card -->
+</div>
+<!-- Bottom Section -->
+<footer class="pb-8 pt-4 flex justify-center">
+<button class="font-label font-medium text-on-surface-variant text-sm hover:text-on-surface transition-colors py-2 px-4 rounded-full">
+                        Exit Admin
+                    </button>
+</footer>
+</main>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,13 @@
+{
+  "gate_status": {
+    "status": "OPEN",
+    "updated_at": 1713340800000,
+    "updated_by": "gateman",
+    "previous_status": "OPEN"
+  },
+  "app_config": {
+    "current_version": "1.0.0",
+    "gateman_active": true,
+    "notification_topic": "gate-status-alerts"
+  }
+}

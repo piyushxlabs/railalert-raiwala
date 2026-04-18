@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gate Closed - RailAlert Raiwala</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Public Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#00458f",
+                        "on-surface": "#1a1c1c",
+                        "outline": "#8f7066",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#cd4700",
+                        "on-secondary-fixed-variant": "#7b2f0e",
+                        "tertiary-container": "#0072e4",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f3f3f3",
+                        "on-primary-fixed-variant": "#802a00",
+                        "inverse-surface": "#2f3131",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-secondary-fixed": "#380d00",
+                        "on-secondary-container": "#762c0a",
+                        "on-primary-fixed": "#380d00",
+                        "surface-variant": "#e2e2e2",
+                        "surface-bright": "#f9f9f9",
+                        "primary-fixed": "#ffdbcf",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#5a4138",
+                        "on-background": "#1a1c1c",
+                        "secondary": "#994523",
+                        "secondary-fixed": "#ffdbcf",
+                        "on-tertiary-fixed": "#001b3f",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#ffb59a",
+                        "surface": "#f9f9f9",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dadada",
+                        "tertiary": "#005ab7",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#abc7ff",
+                        "on-tertiary-container": "#fefcff",
+                        "tertiary-fixed": "#d7e2ff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#e3bfb2",
+                        "background": "#f9f9f9",
+                        "primary": "#a43700",
+                        "secondary-container": "#ff946c",
+                        "primary-fixed-dim": "#ffb59a",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#e8e8e8",
+                        "surface-tint": "#a83900",
+                        "on-primary-container": "#fffbff",
+                        "surface-container": "#eeeeee",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "inverse-on-surface": "#f1f1f1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-[#F5F5F5] text-on-surface min-h-screen flex items-center justify-center p-4">
+<!-- Mobile Frame Simulation -->
+<div class="relative w-full max-w-md h-[850px] bg-[#F5F5F5] rounded-[2.5rem] overflow-hidden shadow-2xl ring-8 ring-surface-container-highest flex flex-col">
+<!-- Status Bar Simulator (Not part of UI spec, just for frame realism) -->
+<div class="h-6 w-full flex justify-between items-center px-6 text-xs font-medium text-on-surface-variant z-50">
+<span>9:41</span>
+<div class="flex space-x-1">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[14px]">wifi</span>
+<span class="material-symbols-outlined text-[14px]">battery_full</span>
+</div>
+</div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full max-w-md z-40 pt-6">
+<div class="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl shadow-sm flex items-center justify-center px-6 h-16 w-full">
+<h1 class="font-public-sans tracking-tight font-bold text-xl text-primary font-black tracking-tighter text-center">RailAlert Raiwala</h1>
+</div>
+<!-- Offline Banner -->
+<div class="h-[36px] bg-[#37474F] text-white flex items-center px-4 gap-2 shadow-md">
+<span class="material-symbols-outlined text-sm">wifi_off</span>
+<span class="text-sm font-medium tracking-wide">⚡ Offline — showing last known status</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center px-6 pt-32 pb-24 overflow-y-auto">
+<!-- Status Card -->
+<div class="w-full bg-[#FFEBEE] border-2 border-[#EF9A9A] rounded-2xl flex flex-col items-center justify-center p-8 relative overflow-hidden transition-all duration-300">
+<div class="mb-6 bg-[#C62828] text-white w-20 h-20 rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(198,40,40,0.2)]">
+<span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1, 'wght' 700;">cancel</span>
+</div>
+<h2 class="text-5xl font-extrabold text-[#C62828] tracking-tight mb-2 text-center leading-none">GATE CLOSED</h2>
+<p class="text-on-surface-variant font-medium text-center mb-8 text-sm">Wait or take an alternate route</p>
+<div class="mt-auto bg-white/50 backdrop-blur-sm py-2 px-4 rounded-full flex items-center gap-2 border border-[#EF9A9A]/30">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">schedule</span>
+<span class="text-xs text-on-surface-variant font-medium tracking-wide">Updated 1 min ago</span>
+</div>
+</div>
+</main>
+</div>
+</body></html>

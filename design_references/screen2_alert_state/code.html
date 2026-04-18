@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RailAlert Raiwala - Alert State</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#eeeeee",
+                        "tertiary-fixed-dim": "#abc7ff",
+                        "primary-fixed-dim": "#ffb59a",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-container-high": "#e8e8e8",
+                        "tertiary-fixed": "#d7e2ff",
+                        "on-tertiary-fixed": "#001b3f",
+                        "secondary": "#994523",
+                        "on-primary-fixed-variant": "#802a00",
+                        "background": "#f9f9f9",
+                        "surface-variant": "#e2e2e2",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#fffbff",
+                        "outline-variant": "#e3bfb2",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#ffb59a",
+                        "surface": "#f9f9f9",
+                        "secondary-container": "#ff946c",
+                        "primary": "#a43700",
+                        "inverse-on-surface": "#f1f1f1",
+                        "tertiary": "#005ab7",
+                        "primary-container": "#cd4700",
+                        "secondary-fixed-dim": "#ffb59a",
+                        "on-surface": "#1a1c1c",
+                        "secondary-fixed": "#ffdbcf",
+                        "on-secondary-fixed-variant": "#7b2f0e",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#762c0a",
+                        "on-primary-fixed": "#380d00",
+                        "tertiary-container": "#0072e4",
+                        "on-tertiary-fixed-variant": "#00458f",
+                        "on-tertiary-container": "#fefcff",
+                        "outline": "#8f7066",
+                        "on-secondary-fixed": "#380d00",
+                        "on-background": "#1a1c1c",
+                        "primary-fixed": "#ffdbcf",
+                        "inverse-surface": "#2f3131",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-bright": "#f9f9f9",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#a83900",
+                        "surface-dim": "#dadada",
+                        "on-surface-variant": "#5a4138"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Public Sans"],
+                        "body": ["Public Sans"],
+                        "label": ["Public Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex items-center justify-center p-4 sm:p-8">
+<div class="relative w-full max-w-[412px] h-[892px] bg-white rounded-[40px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)] border-[8px] border-surface-container-high flex flex-col">
+<!-- TopAppBar Component -->
+<header class="bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-xl docked full-width top-0 sticky z-50 flex justify-center items-center w-full px-6 py-4 shadow-[0px_4px_20px_rgba(26,28,28,0.04)] font-['Public_Sans'] tracking-tight">
+<h1 class="text-2xl font-black tracking-tighter text-orange-800 dark:text-orange-400">RailAlert Raiwala</h1>
+</header>
+<div class="bg-stone-200/50 dark:bg-stone-800/50 h-[1px] w-full"></div>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto px-4 py-6 flex flex-col items-center justify-center gap-6">
+<!-- Alert Status Card -->
+<div class="w-full rounded-[2rem] p-8 flex flex-col items-center justify-center text-center shadow-[0px_8px_40px_rgba(230,81,0,0.15)] relative overflow-hidden" style="background-color: #FFF3E0; border: 2px solid #FFCC80;">
+<div class="mb-6 bg-white/50 p-6 rounded-full shadow-[0px_4px_20px_rgba(230,81,0,0.1)] relative">
+<div class="absolute inset-0 bg-[#E65100]/10 rounded-full animate-pulse"></div>
+<span class="material-symbols-outlined relative z-10" style="font-size: 64px; color: #E65100; font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<h2 class="font-black tracking-tighter mb-2" style="font-size: 48px; line-height: 1.1; color: #E65100;">⚠ TRAIN COMING</h2>
+<p class="text-[14px] font-medium text-stone-600 mb-8">Gate closing soon — plan your route</p>
+<div class="mt-auto pt-6 w-full flex justify-center">
+<span class="text-xs font-semibold uppercase tracking-widest text-stone-500 bg-white/60 px-4 py-2 rounded-full backdrop-blur-sm shadow-[0_2px_8px_rgba(0,0,0,0.05)]">
+                        Updated just now
+                    </span>
+</div>
+</div>
+</main>
+</div>
+</body></html>
