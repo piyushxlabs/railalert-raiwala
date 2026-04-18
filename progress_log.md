@@ -256,3 +256,29 @@
 **Verification Result:**
 - Widget enforces dynamic color mapping and disabled logic strictly.
 ---
+
+## Step 14 — CommuterDashboardScreen
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Integrated `OfflineBanner`, `AppLogo`, and `GateStatusCard` into a singular top-level `CommuterDashboardScreen`.
+- Surfaced Firebase's `.info/connected` leaf passively inside `GateService` to map immediately to the `OfflineBanner` without triggering excess manual connection loops.
+- Replaced the main app launch placeholder route with the finalized Dashboard.
+
+**Files Created:**
+- `lib/screens/commuter_dashboard_screen.dart`
+
+**Files Modified:**
+- `lib/services/gate_service.dart` (Exposed `connectionStream`)
+- `lib/screens/disclaimer_screen.dart` (Updated replacement router)
+- `lib/main.dart` (Updated root initial route)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Dashboard renders full structure with realtime reaction to the mock `statusStream` and `connectionStream`.
+---
+
+

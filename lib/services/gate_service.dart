@@ -9,6 +9,10 @@ class GateService {
   final FirebaseDatabase _db = FirebaseDatabase.instance;
   final NotificationService _notificationService = NotificationService();
 
+  Stream<bool> get connectionStream {
+    return _db.ref('.info/connected').onValue.map((event) => event.snapshot.value == true);
+  }
+
   Stream<GateStatusModel?> get statusStream {
     final statusRef = _db.ref(AppConstants.databaseNodeGateStatus);
     final configRef = _db.ref(AppConstants.databaseNodeAppConfig);

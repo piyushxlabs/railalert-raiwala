@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'config/firebase_options.dart';
 import 'theme/app_theme.dart';
 import 'screens/disclaimer_screen.dart';
+import 'screens/commuter_dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +45,7 @@ class RailAlertApp extends StatelessWidget {
       title: 'RailAlert Raiwala',
       theme: AppTheme.themeData,
       home: hasAgreedToDisclaimer 
-          ? const Scaffold(body: Center(child: Text('Dashboard Placeholder - Awaiting Step 14')))
+          ? const CommuterDashboardScreen()
           : const DisclaimerScreen(),
     );
   }

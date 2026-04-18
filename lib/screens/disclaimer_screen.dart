@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../theme/app_theme.dart';
+import 'commuter_dashboard_screen.dart';
 
 class DisclaimerScreen extends StatelessWidget {
   const DisclaimerScreen({super.key});
@@ -10,12 +11,9 @@ class DisclaimerScreen extends StatelessWidget {
     await prefs.setBool('has_agreed_to_disclaimer', true);
 
     if (context.mounted) {
-      // Transition to a placeholder dashboard (Step 14 is the actual Commuter Dashboard)
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => const Scaffold(
-            body: Center(child: Text('Dashboard Placeholder - Awaiting Step 14')),
-          ),
+          builder: (_) => const CommuterDashboardScreen(),
         ),
       );
     }
