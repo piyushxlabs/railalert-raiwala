@@ -1,4 +1,4 @@
-- Last Completed Step: Step 12: AppLogo Widget
-- Implemented Features: Stateful background tap counter, expanded HitTestBoxes
-- Pending Next Step: Step 13: AdminAction Button
+- Last Completed Step: Step 13: AdminAction Button
+- Implemented Features: Dynamic Action Buttons, Ripple InkWells, IsLoading Boolean logic
+- Pending Next Step: Step 14: CommuterDashboardScreen
 - Known Issues / Blockers: None

@@ -234,3 +234,25 @@
 **Verification Result:**
 - Widget compiles and correctly logs taps without memory leakage.
 ---
+
+## Step 13 — AdminAction Button Widget
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Crafted the `AdminActionButton` component which dynamically binds to the `GateStatus` enum to render corresponding action UI colors and labels.
+- Mapped logic to obscure interactivity when `isLoading == true` while surfacing a scaled `CircularProgressIndicator`.
+- Preserved precise dimensions (minimum 160px height) and integrated the exact Ripple feedback styles spec.
+
+**Files Created:**
+- `lib/widgets/admin_action_button.dart`
+
+**Files Modified:**
+- None.
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Widget enforces dynamic color mapping and disabled logic strictly.
+---
