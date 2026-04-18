@@ -1,6 +1,6 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# STEP 11 COMPLETION CHECKLIST
-# OfflineBanner Widget
+# STEP 12 COMPLETION CHECKLIST
+# AppLogo Widget
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⏰ BEFORE running the next prompt — do these first:
@@ -10,13 +10,17 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ AFTER code was generated — do these now:
 
-[ ] Nothing — ready to check syntax.
+[ ] Run pub get
+    ```
+    flutter pub get
+    ```
+    Expected: Ensures any minor native assets settle.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ WHAT GOT BUILT THIS STEP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[ ] `lib/widgets/offline_banner.dart`
+[ ] `lib/widgets/app_logo.dart` — Stateful interactive logo that quietly counts admin initiation gestures.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧪 TESTING & VERIFICATION
@@ -35,11 +39,11 @@ Expected: `No issues found!`
 
 ```
 git add .
-git commit -m "Step 11: Set up the offline banner UI with sliding height animations"
+git commit -m "Step 12: Produced the AppLogo featuring background administrative tap tracking"
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✋ DO NOT proceed to Step 12 until:
+✋ DO NOT proceed to Step 13 until:
 [ ] All tests above show ✅
 [ ] Git commit is done
 [ ] You have read do_after_completion.md fully

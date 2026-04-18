@@ -212,3 +212,25 @@
 **Verification Result:**
 - Widget logic encapsulates gracefully shrinking height to zero without overflow layout exceptions.
 ---
+
+## Step 12 — AppLogo Widget
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Defined the interactive `AppLogo` visual component.
+- Implemented the invisible continuous rapid tap counter triggering `onAdminTrigger()` using constraints imported directly from `AppConstants`.
+- Manipulated GestureDetector hit boxes to establish an artificially enlarged touch window without breaking 64x64px visual layout sizes.
+
+**Files Created:**
+- `lib/widgets/app_logo.dart`
+
+**Files Modified:**
+- None.
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Widget compiles and correctly logs taps without memory leakage.
+---

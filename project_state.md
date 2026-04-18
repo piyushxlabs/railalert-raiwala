@@ -1,4 +1,4 @@
-- Last Completed Step: Step 11: OfflineBanner Widget
-- Implemented Features: Offline Header UI, Height Slide Animation
-- Pending Next Step: Step 12: AppLogo Widget
+- Last Completed Step: Step 12: AppLogo Widget
+- Implemented Features: Stateful background tap counter, expanded HitTestBoxes
+- Pending Next Step: Step 13: AdminAction Button
 - Known Issues / Blockers: None
