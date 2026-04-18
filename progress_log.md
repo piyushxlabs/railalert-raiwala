@@ -98,3 +98,24 @@
 **Verification Result:**
 - Theme structure is completely established. All required variables match design documentation.
 ---
+
+## Step 3B — Direct Firebase Write Setup (Spark plan temporary)
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Configured Realtime Database to be writeable from the client side temporarily (Spark tier).
+- Registered FirebaseDatabase `setPersistenceEnabled(true)` in `main.dart` before establishing connections, ensuring localized caching of offline writes.
+
+**Files Created:**
+- None
+
+**Files Modified:**
+- `lib/main.dart` — Appended `firebase_database` setup block.
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Static compilation passes. The application operates with caching initialized.
+---

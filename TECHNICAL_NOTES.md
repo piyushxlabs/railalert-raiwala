@@ -12,3 +12,5 @@ Step 1 — No deviations from spec.
 Step 2 — No deviations from spec.
 
 Step 3 — Adopted `google_fonts` package for the bundled Noto Sans instead of loading manual TTF files into assets. This is the recommended Flutter way and caching works efficiently offline after the first boot.
+
+Step 3B — Configured `FirebaseDatabase.instance.setPersistenceEnabled(true)` early in the `runApp` initialization to bypass lack of robust back-end connection logic per Spark plan restrictions. This will ensure UI state changes even if network oscillates.

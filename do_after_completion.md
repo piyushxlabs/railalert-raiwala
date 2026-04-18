@@ -1,52 +1,36 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# STEP 3 COMPLETION CHECKLIST
-# App Theme & Constants
+# STEP 3B COMPLETION CHECKLIST
+# Direct Firebase Write Setup (Spark plan)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⏰ BEFORE running the next prompt — do these first:
 
-[ ] None! This step is purely organizational code creation. 
+[ ] None! This was a quick configuration insert.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ AFTER code was generated — do these now:
 
-[ ] Fetch the newly added Google Fonts package
-    To make sure everything resolves, run:
+[ ] Test basic app compilation
     ```
-    flutter pub get
+    flutter run
     ```
-    Expected: Completes without error, adding Google Fonts to the pub cache.
+    Expected: App boots cleanly. If it fails immediately with an initialization exception, it means `FirebaseDatabase` persistence was called out of order (which I addressed by putting it directly after `initializeApp()`). It should pass cleanly.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ WHAT GOT BUILT THIS STEP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[ ] File: `lib/theme/app_theme.dart` — Colors, Typography, Spacing, and global ThemeData
-[ ] File: `lib/config/app_constants.dart` — Magic strings and logic constants extracted here
-[ ] Package: `google_fonts` — Dynamically serve and cache Noto Sans natively
+[ ] File: `lib/main.dart` — Database caching and offline capabilities configured.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧪 TESTING & VERIFICATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Test 1 — Files Exist:
+Test 1 — Code Check:
 ```
-dir lib\theme\app_theme.dart lib\config\app_constants.dart
+findstr /C:"setPersistenceEnabled" lib\main.dart
 ```
-✅ Expected: Both files are present in the project
-
-Test 2 — Environment / Dependencies:
-```
-flutter pub deps | findstr google_fonts
-```
-✅ Expected: Confirm google_fonts is configured
-
-Test 3 — Code Compilation:
-```
-flutter analyze
-```
-✅ Expected: "No issues found!"
-❌ If errors: Check if there's a typo in the files we just added
+✅ Expected: Displays the persistence-enabling configuration.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📦 GIT COMMIT
@@ -55,11 +39,11 @@ flutter analyze
 
 ```
 git add .
-git commit -m "Step 3: App Theme & Constants — Colors, Google Fonts (Noto Sans), and AppConstants"
+git commit -m "Step 3B: Activated Firebase RTDB offline persistence for client-sided Spark workflow"
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✋ DO NOT proceed to Step 3B until:
+✋ DO NOT proceed to Step 7 until:
 [ ] All tests above show ✅
 [ ] Git commit is done
 [ ] You have read do_after_completion.md fully
