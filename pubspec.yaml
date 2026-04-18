@@ -42,6 +42,7 @@ dependencies:
   http: ^1.6.0
   rxdart: ^0.28.0
   shared_preferences: ^2.5.5
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

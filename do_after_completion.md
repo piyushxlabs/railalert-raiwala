@@ -1,11 +1,11 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# STEP 9B COMPLETION CHECKLIST
-# Disclaimer & Terms Legal Screen
+# STEP 10 COMPLETION CHECKLIST
+# GateStatusCard Widget
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⏰ BEFORE running the next prompt — do these first:
 
-[ ] None! This is purely UI and local storage.
+[ ] None! This is an isolated widget build, awaiting full integration in the dashboard step.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ AFTER code was generated — do these now:
@@ -14,26 +14,13 @@
     ```
     flutter pub get
     ```
-    Expected: Ensures `shared_preferences` resolves properly.
-
-[ ] Execute the UI
-    ```
-    flutter run
-    ```
-    Expected: App boots and **IMMEDIATELY** shows the Disclaimer & Terms screen with Bilingual text. 
-
-[ ] Test Agreement Logic
-    1. Click the "I Agree" button.
-    2. Expected: The app routes to a white screen saying "Dashboard Placeholder - Awaiting Step 14".
-    3. Close the app completely and rerun `flutter run`.
-    4. Expected: The app should boot directly into the Dashboard Placeholder, completely skipping the Disclaimer.
+    Expected: Ensures `shimmer` resolves properly.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ WHAT GOT BUILT THIS STEP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[ ] `lib/screens/disclaimer_screen.dart` — Custom Material 3 Agreement Gate
-[ ] `lib/main.dart` — Asynchronous route interception logic
+[ ] `lib/widgets/gate_status_card.dart` — Core animated UI component handling OPEN/ALERT/CLOSED rendering precisely to UI specific tokens.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧪 TESTING & VERIFICATION
@@ -43,6 +30,7 @@ Test 1 — Syntax State:
 ```
 flutter analyze
 ```
+Expected: `No issues found!`
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📦 GIT COMMIT
@@ -51,11 +39,11 @@ flutter analyze
 
 ```
 git add .
-git commit -m "Step 9B: Added mandatory legal disclaimer screen and shared_preferences cache"
+git commit -m "Step 10: Created animated GateStatusCard matching central design variables"
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✋ DO NOT proceed to Step 10 until:
+✋ DO NOT proceed to Step 11 until:
 [ ] All tests above show ✅
 [ ] Git commit is done
 [ ] You have read do_after_completion.md fully

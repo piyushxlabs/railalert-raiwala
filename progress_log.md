@@ -168,3 +168,26 @@
 **Verification Result:**
 - SharedPreferences loads securely before initial material mounting.
 ---
+
+## Step 10 — GateStatusCard Widget
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Constructed `GateStatusCard` as a `StatefulWidget` to map `GateStatusModel` into visual layers matching `Ui_Design.md` exactly.
+- Built a looped 1.5s visual scaling pulse for the 'ALERT' status icon using `SingleTickerProviderStateMixin` and `AnimationController`.
+- Established discrete active states (OPEN, ALERT, CLOSED), a 'Paused' fallback, and a `shimmer` placeholder layout for null states securely handling null safety.
+- Handled UI overflowing text sizes safely by wrapping `displayLarge` labels inside `FittedBox`.
+
+**Files Created:**
+- `lib/widgets/gate_status_card.dart`
+
+**Files Modified:**
+- `pubspec.yaml` (Added `shimmer`)
+
+**Packages Installed:**
+- `shimmer`
+
+**Verification Result:**
+- Compiled flawlessly. Animations and widget structures are bound to `AppTheme` references safely.
+---
