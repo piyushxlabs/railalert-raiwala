@@ -281,4 +281,31 @@
 - Dashboard renders full structure with realtime reaction to the mock `statusStream` and `connectionStream`.
 ---
 
+## Steps 15 & 16 — PIN Entry and Gateman Admin Screen
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Orchestrated the secure `PinEntryScreen` utilizing stateful array boundaries mirroring physical hardware keypads.
+- Wired internal bypass mechanics strictly limiting `secrets.dart` leakage.
+- Created `AdminScreen` leveraging the pre-built `AdminActionButton` configured dynamically through `GateService.updateStatus` state.
+- Crafted `StatusSnackbar` resolving localized feedback without persistent memory.
+- Hooked the `.pushReplacement` pipeline across the bottom sheet context boundaries cleanly safely transitioning into the isolated Admin environment.
+
+**Files Created:**
+- `lib/screens/pin_entry_screen.dart`
+- `lib/screens/admin_screen.dart`
+- `lib/widgets/status_snackbar.dart`
+
+**Files Modified:**
+- `lib/config/secrets.dart` (Redacted static PIN)
+- `lib/screens/commuter_dashboard_screen.dart` (Wired sheet invoker)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Components linked smoothly avoiding unmounted Context exception chains on async network completion.
+---
+
 

@@ -5,6 +5,7 @@ import '../widgets/gate_status_card.dart';
 import '../widgets/offline_banner.dart';
 import '../widgets/app_logo.dart';
 import '../theme/app_theme.dart';
+import 'pin_entry_screen.dart';
 
 class CommuterDashboardScreen extends StatefulWidget {
   const CommuterDashboardScreen({super.key});
@@ -17,7 +18,12 @@ class _CommuterDashboardScreenState extends State<CommuterDashboardScreen> {
   final GateService _gateService = GateService();
 
   void _handleAdminTrigger() {
-    debugPrint('Admin sequence triggered! Step 15 will hook this to the PIN Screen Modal.');
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const PinEntryScreen(),
+    );
   }
 
   @override

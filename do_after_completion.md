@@ -1,32 +1,33 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# STEP 14 COMPLETION CHECKLIST
-# CommuterDashboardScreen
+# STEP 15/16 COMPLETION CHECKLIST
+# Admin UI Cycle
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⏰ BEFORE running the next prompt — do these first:
 
-[ ] None! The app should cleanly route assuming you clicked 'I Agree' earlier.
+[ ] None! This bridges the entire primary control sequence.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ AFTER code was generated — do these now:
 
-[ ] Launch Application
-    ```
-    flutter run
-    ```
-    Expected: The application launches and lands directly on `CommuterDashboardScreen`. 
+[ ] Test Admin Flow Sequence (Functional Logic)
+    While on the Dashboard:
+    1. Tap the App Logo rapidly 5 times.
+    Expected: A PIN Numpad tray smoothly slides up.
 
-[ ] Test Offline Capabilities
-    While the app is open on your device, toggle Airplane Mode ON.
-    Expected: Within ~1-3 seconds, the discrete grey `OfflineBanner` drops down from the ceiling.
-    Toggle Airplane mode back OFF.
-    Expected: The banner cleanly slides back up and disappears.
+    2. Type "1234" (Development Bypass).
+    Expected: Screen instantly flashes into Gateman Admin Screen without requiring an 'enter' button.
+
+    3. Click the massive "TRAIN COMING" (or respective) action button.
+    Expected: Button greys out briefly (Loading), then cycles to the next state, and a green Snackbar slides up confirming the cycle.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ WHAT GOT BUILT THIS STEP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[ ] `lib/screens/commuter_dashboard_screen.dart` — Master shell layout uniting all Step 10-13 components.
+[ ] `lib/screens/pin_entry_screen.dart` — Overlay Numpad Modal
+[ ] `lib/screens/admin_screen.dart` — Administrative State control UI
+[ ] `lib/widgets/status_snackbar.dart` — Required UI utility component (Step 17 built early!)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧪 TESTING & VERIFICATION
@@ -45,11 +46,11 @@ Expected: `No issues found!`
 
 ```
 git add .
-git commit -m "Step 14: Fused components together forming the Master Commuter Dashboard Frame"
+git commit -m "Step 15: Executed Admin Authentication bounds unifying the entire Application Cycle"
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✋ DO NOT proceed to Step 15 until:
+✋ DO NOT proceed to Step 18 until:
 [ ] All tests above show ✅
 [ ] Git commit is done
 [ ] You have read do_after_completion.md fully
