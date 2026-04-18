@@ -1,39 +1,29 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# STEP 2 COMPLETION CHECKLIST
-# Flutter Project Initialization
+# STEP 3 COMPLETION CHECKLIST
+# App Theme & Constants
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⏰ BEFORE running the next prompt — do these first:
 
-[ ] Run FlutterFire Configure
-    The code we just wrote expects `firebase_options.dart` to exist in `lib/config/`. We must have the CLI generate it.
-    Run this command in the project root:
-    ```
-    flutterfire configure -o lib/config/firebase_options.dart
-    ```
-    Expected: CLI authenticates, prompts you to select the "RailAlert" project, registers Android app, and downloads `google-services.json` / `firebase_options.dart`.
-
-[ ] Start an Android Emulator or attach an Android Device
-    Expected: Device appears in `flutter devices`
+[ ] None! This step is purely organizational code creation. 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ AFTER code was generated — do these now:
 
-[ ] Run and Verify the App
+[ ] Fetch the newly added Google Fonts package
+    To make sure everything resolves, run:
     ```
-    flutter run
+    flutter pub get
     ```
-    Expected: The app boots on the emulator/device, initializes Firebase without crashing, and shows a white screen with "RailAlert Raiwala Initialized" text.
-    If wrong: Check if `minSdk 21` is accurately applied, or try running `flutter clean` then `flutter pub get`.
+    Expected: Completes without error, adding Google Fonts to the pub cache.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ WHAT GOT BUILT THIS STEP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[ ] Flutter project boilerplate
-[ ] Firebase dependencies defined in `pubspec.yaml`
-[ ] `lib/main.dart` initialized with Crashlytics bindings
-[ ] `minSdk` configured to 21
+[ ] File: `lib/theme/app_theme.dart` — Colors, Typography, Spacing, and global ThemeData
+[ ] File: `lib/config/app_constants.dart` — Magic strings and logic constants extracted here
+[ ] Package: `google_fonts` — Dynamically serve and cache Noto Sans natively
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧪 TESTING & VERIFICATION
@@ -41,33 +31,22 @@
 
 Test 1 — Files Exist:
 ```
-dir lib\config\firebase_options.dart
+dir lib\theme\app_theme.dart lib\config\app_constants.dart
 ```
-✅ Expected: File created successfully by `flutterfire configure`
-❌ If missing: Rerun the flutterfire command above
+✅ Expected: Both files are present in the project
 
 Test 2 — Environment / Dependencies:
 ```
-flutter pub deps | findstr firebase
+flutter pub deps | findstr google_fonts
 ```
-✅ Expected: Core, database, messaging, and crashlytics packages appear
-❌ If errors: run `flutter pub get`
+✅ Expected: Confirm google_fonts is configured
 
-Test 3 — Process Start:
+Test 3 — Code Compilation:
 ```
-flutter run
+flutter analyze
 ```
-✅ Expected: App launches successfully
-❌ If errors: Look at the console output. Missing `google-services.json` means step 1 failed during `flutterfire configure`.
-
-Test 5 — Security Check:
-[ ] Verify `.gitignore` ignores Firebase secrets
-    ```
-    findstr /C:"google-services.json" .gitignore
-    findstr /C:"firebase_options.dart" .gitignore
-    ```
-    ✅ Expected: They should ideally appear! If not, manually add them to `.gitignore`!
-    ❌ If missing: Add `android/app/google-services.json` and `lib/config/firebase_options.dart` to `.gitignore` immediately.
+✅ Expected: "No issues found!"
+❌ If errors: Check if there's a typo in the files we just added
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📦 GIT COMMIT
@@ -76,11 +55,11 @@ Test 5 — Security Check:
 
 ```
 git add .
-git commit -m "Step 2: Flutter Project Initialization — dependencies and Firebase core init"
+git commit -m "Step 3: App Theme & Constants — Colors, Google Fonts (Noto Sans), and AppConstants"
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✋ DO NOT proceed to Step 3 until:
+✋ DO NOT proceed to Step 3B until:
 [ ] All tests above show ✅
 [ ] Git commit is done
 [ ] You have read do_after_completion.md fully

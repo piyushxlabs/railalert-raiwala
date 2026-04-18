@@ -74,3 +74,27 @@
 - `flutter pub get` completed successfully.
 - Manual execution of `flutterfire configure` requires user action to complete the loop.
 ---
+
+## Step 3 — App Theme & Constants
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Defined exact color tokens mapped from UI_DESIGN_SYSTEM (Primary, Secondary, Node Status Colors)
+- Implemented Noto Sans typography using google_fonts package
+- Created centralized UI spacing and border radius constants
+- Created AppConstants separating backend logic from secrets
+
+**Files Created:**
+- `lib/theme/app_theme.dart` — All thematic styles and ThemeData generator
+- `lib/config/app_constants.dart` — Firebase topic/DB names and tap config
+
+**Files Modified:**
+- `pubspec.yaml` — Added `google_fonts`
+
+**Packages Installed:**
+- `google_fonts`
+
+**Verification Result:**
+- Theme structure is completely established. All required variables match design documentation.
+---

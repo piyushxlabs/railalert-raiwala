@@ -1,4 +1,4 @@
-- Last Completed Step: Step 2: Flutter Project Initialization
-- Implemented Features: Flutter boilerplate, Firebase dependencies, and main.dart initialization
-- Pending Next Step: Step 3: App Theme & Constants
-- Known Issues / Blockers: User must manually run flutterfire configure before the app will build successfully.
+- Last Completed Step: Step 3: App Theme & Constants
+- Implemented Features: Theme Tokens (Colors, Typography, Spacing, Radius) and Project Constants
+- Pending Next Step: Step 3B: Direct Firebase Write Setup (Spark plan temporary)
+- Known Issues / Blockers: None

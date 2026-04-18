@@ -10,3 +10,5 @@ Step 1 — No deviations from spec.
 ---
 
 Step 2 — No deviations from spec.
+
+Step 3 — Adopted `google_fonts` package for the bundled Noto Sans instead of loading manual TTF files into assets. This is the recommended Flutter way and caching works efficiently offline after the first boot.
