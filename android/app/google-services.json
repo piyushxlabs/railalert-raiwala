@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "577687173888",
+    "firebase_url": "https://railalert-raiwala-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "railalert-raiwala",
+    "storage_bucket": "railalert-raiwala.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577687173888:android:d0dd6ffcc6284960c611e5",
+        "android_client_info": {
+          "package_name": "com.example.railalert_raiwala"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD67g5_pMQu3pICZ7-3kigea2_8QtiEca4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

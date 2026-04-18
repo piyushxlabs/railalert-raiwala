@@ -1,5 +1,1 @@
-{
-  "database": {
-    "rules": "database.rules.json"
-  }
-}
+{"database":{"rules":"database.rules.json"},"flutter":{"platforms":{"android":{"default":{"projectId":"railalert-raiwala","appId":"1:577687173888:android:d0dd6ffcc6284960c611e5","fileOutput":"android/app/google-services.json"}},"dart":{"lib/config/firebase_options.dart":{"projectId":"railalert-raiwala","configurations":{"android":"1:577687173888:android:d0dd6ffcc6284960c611e5"}}}}}}

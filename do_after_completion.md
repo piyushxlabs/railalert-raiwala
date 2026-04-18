@@ -1,35 +1,39 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# ARCHITECTURE UPDATE COMPLETION CHECKLIST
-# Spark Plan Adjustments
+# STEP 2 COMPLETION CHECKLIST
+# Flutter Project Initialization
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⏰ BEFORE running the next prompt — do these first:
 
-[ ] Review Document Updates
-    Manually check `docs/Implmentation_planner.md` to ensure Cloud Function steps are deferred.
-    Expected: Steps 4, 5, 6 marked as DEFERRED. Step 3B added.
+[ ] Run FlutterFire Configure
+    The code we just wrote expects `firebase_options.dart` to exist in `lib/config/`. We must have the CLI generate it.
+    Run this command in the project root:
+    ```
+    flutterfire configure -o lib/config/firebase_options.dart
+    ```
+    Expected: CLI authenticates, prompts you to select the "RailAlert" project, registers Android app, and downloads `google-services.json` / `firebase_options.dart`.
 
-[ ] Update Local CLI Rules
-    If you already deployed database security rules to Firebase, redeploy them so the new `.write: true` rule takes effect.
-    ```
-    firebase deploy --only database
-    ```
-    Expected: Firebase console shows the updated `.write: true` for `gate_status`.
+[ ] Start an Android Emulator or attach an Android Device
+    Expected: Device appears in `flutter devices`
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ AFTER code was generated — do these now:
 
-[ ] Proceed to Step 2
-    Once verified, instruct the assistant to continue with `Step 2: Flutter Project Initialization`.
+[ ] Run and Verify the App
+    ```
+    flutter run
+    ```
+    Expected: The app boots on the emulator/device, initializes Firebase without crashing, and shows a white screen with "RailAlert Raiwala Initialized" text.
+    If wrong: Check if `minSdk 21` is accurately applied, or try running `flutter clean` then `flutter pub get`.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ WHAT GOT BUILT THIS STEP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[ ] File: `docs/Architecture_Blueprint.md` — Updated Flow
-[ ] File: `docs/Backend_schema.md` — Updated Rules
-[ ] File: `docs/Implmentation_planner.md` — Updated Order
-[ ] File: `database.rules.json` — Relaxed write lock
+[ ] Flutter project boilerplate
+[ ] Firebase dependencies defined in `pubspec.yaml`
+[ ] `lib/main.dart` initialized with Crashlytics bindings
+[ ] `minSdk` configured to 21
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧪 TESTING & VERIFICATION
@@ -37,15 +41,33 @@
 
 Test 1 — Files Exist:
 ```
-dir docs\
+dir lib\config\firebase_options.dart
 ```
-✅ Expected: Documents remain present
+✅ Expected: File created successfully by `flutterfire configure`
+❌ If missing: Rerun the flutterfire command above
 
-Test 2 — Content Update Verification:
+Test 2 — Environment / Dependencies:
 ```
-findstr /C:"3B" docs\Implmentation_planner.md
+flutter pub deps | findstr firebase
 ```
-✅ Expected: Finds "Step 3B: Direct Firebase Write Setup"
+✅ Expected: Core, database, messaging, and crashlytics packages appear
+❌ If errors: run `flutter pub get`
+
+Test 3 — Process Start:
+```
+flutter run
+```
+✅ Expected: App launches successfully
+❌ If errors: Look at the console output. Missing `google-services.json` means step 1 failed during `flutterfire configure`.
+
+Test 5 — Security Check:
+[ ] Verify `.gitignore` ignores Firebase secrets
+    ```
+    findstr /C:"google-services.json" .gitignore
+    findstr /C:"firebase_options.dart" .gitignore
+    ```
+    ✅ Expected: They should ideally appear! If not, manually add them to `.gitignore`!
+    ❌ If missing: Add `android/app/google-services.json` and `lib/config/firebase_options.dart` to `.gitignore` immediately.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📦 GIT COMMIT
@@ -54,11 +76,11 @@ findstr /C:"3B" docs\Implmentation_planner.md
 
 ```
 git add .
-git commit -m "Architecture: Updated plans for Spark tier (Cloud Functions deferred)"
+git commit -m "Step 2: Flutter Project Initialization — dependencies and Firebase core init"
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✋ DO NOT proceed to Step 2 until:
+✋ DO NOT proceed to Step 3 until:
 [ ] All tests above show ✅
 [ ] Git commit is done
 [ ] You have read do_after_completion.md fully

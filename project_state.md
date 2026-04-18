@@ -1,4 +1,4 @@
-- Last Completed Step: Step 1: Firebase Project Setup (Manual + CLI)
-- Implemented Features: Firebase basic folder structure and database security rules
-- Pending Next Step: Step 2: Flutter Project Initialization
-- Known Issues / Blockers: None
+- Last Completed Step: Step 2: Flutter Project Initialization
+- Implemented Features: Flutter boilerplate, Firebase dependencies, and main.dart initialization
+- Pending Next Step: Step 3: App Theme & Constants
+- Known Issues / Blockers: User must manually run flutterfire configure before the app will build successfully.

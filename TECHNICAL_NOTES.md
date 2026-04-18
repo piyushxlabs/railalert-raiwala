@@ -8,3 +8,5 @@ Step 1 — No deviations from spec.
 **Reason:** Firebase Cloud Functions are unavailable on the free Spark plan. Wait for Blaze upgrade.
 **Impact:** Client app must now send FCM messages manually and enforce state transition validations (OPEN->ALERT, etc) locally until server validation is available.
 ---
+
+Step 2 — No deviations from spec.

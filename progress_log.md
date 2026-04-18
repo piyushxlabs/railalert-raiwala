@@ -44,3 +44,33 @@
 **Verification Result:**
 - All document updates successfully mapped to the new Spark architecture.
 ---
+
+## Step 2 — Flutter Project Initialization
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Initialized Flutter Android project via CLI
+- Added core Firebase dependencies to pubspec.yaml
+- Modified android/app/build.gradle.kts to set minSdk = 21
+- Hard-reset lib/main.dart with Firebase and Crashlytics initialization boilerplate
+
+**Files Created:**
+- Entire Flutter boilerplate tree
+- `lib/main.dart` (overwritten)
+
+**Files Modified:**
+- `pubspec.yaml` — added firebase_core, firebase_database, firebase_messaging, firebase_crashlytics
+- `android/app/build.gradle.kts` — modified minSdkVersion
+
+**Packages Installed:**
+- `firebase_core` — Core init requirement
+- `firebase_database` — Realtime Database interaction
+- `firebase_messaging` — Push notification handling
+- `firebase_crashlytics` — Error reporting
+
+**Verification Result:**
+- Flutter tree instantiated.
+- `flutter pub get` completed successfully.
+- Manual execution of `flutterfire configure` requires user action to complete the loop.
+---
