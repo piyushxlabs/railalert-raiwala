@@ -16,3 +16,5 @@ Step 3 — Adopted `google_fonts` package for the bundled Noto Sans instead of l
 Step 3B — Configured `FirebaseDatabase.instance.setPersistenceEnabled(true)` early in the `runApp` initialization to bypass lack of robust back-end connection logic per Spark plan restrictions. This will ensure UI state changes even if network oscillates.
 
 Steps 7, 8, 9 — Adopted the `http` package and implemented a manual POST operation against the FCM REST endpoint from within the `NotificationService`. This is a hard Spark Plan workaround because the standard `firebase_messaging` Flutter client SDK cannot send messages. `secrets.dart` added locally to isolate the API key. Also utilized `rxdart` to combine `gate_status` and `app_config` into a single reactive pipeline.
+
+Step 9B — Evaluated `SharedPreferences` locally before initializing `runApp()` to guarantee zero flickering or artifacting on app boot. Routing is strictly conditional to either the Dashboard or the Disclaimer.

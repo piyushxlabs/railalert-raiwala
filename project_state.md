@@ -1,4 +1,4 @@
-- Last Completed Step: Steps 7, 8 & 9 Data Layer
-- Implemented Features: Local FCM dispatch trigger, Firebase DB write wrapper, Validation models, Notification bindings, RxDart state manager
+- Last Completed Step: Step 9B: Disclaimer Screen
+- Implemented Features: Legal Disclaimer, SharedPreferences offline caching, Async root routing gatekeeper
 - Pending Next Step: Step 10: GateStatusCard Widget
-- Known Issues / Blockers: You must paste your real Server Key into secrets.dart whenever you want push notifications to work.
+- Known Issues / Blockers: None

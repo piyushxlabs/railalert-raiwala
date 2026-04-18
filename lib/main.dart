@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui';
 import 'config/firebase_options.dart';
+import 'theme/app_theme.dart';
+import 'screens/disclaimer_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,25 +27,25 @@ void main() async {
     return true;
   };
 
-  runApp(const RailAlertApp());
+  final prefs = await SharedPreferences.getInstance();
+  final hasAgreed = prefs.getBool('has_agreed_to_disclaimer') ?? false;
+
+  runApp(RailAlertApp(hasAgreedToDisclaimer: hasAgreed));
 }
 
 class RailAlertApp extends StatelessWidget {
-  const RailAlertApp({super.key});
+  final bool hasAgreedToDisclaimer;
+
+  const RailAlertApp({super.key, required this.hasAgreedToDisclaimer});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'RailAlert Raiwala',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        useMaterial3: true,
-      ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('RailAlert Raiwala Initialized'),
-        ),
-      ),
+      theme: AppTheme.themeData,
+      home: hasAgreedToDisclaimer 
+          ? const Scaffold(body: Center(child: Text('Dashboard Placeholder - Awaiting Step 14')))
+          : const DisclaimerScreen(),
     );
   }
 }

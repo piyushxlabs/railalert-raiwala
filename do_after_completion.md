@@ -1,12 +1,11 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# STEPS 7, 8, 9 COMPLETION CHECKLIST
-# Data Layer & Services
+# STEP 9B COMPLETION CHECKLIST
+# Disclaimer & Terms Legal Screen
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⏰ BEFORE running the next prompt — do these first:
 
-[ ] Add your Server Key (Optional but Required for FCM later)
-    Open `lib/config/secrets.dart` and paste your Cloud Messaging API (Legacy) Token where it says `"REPLACE_WITH_REAL_KEY"`. Do this before you push updates, as the file is ignored by Git and protects your key.
+[ ] None! This is purely UI and local storage.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏰ AFTER code was generated — do these now:
@@ -15,34 +14,32 @@
     ```
     flutter pub get
     ```
-    Expected: Ensures `rxdart` and `http` resolve properly.
+    Expected: Ensures `shared_preferences` resolves properly.
 
-[ ] Run syntax analysis
+[ ] Execute the UI
     ```
-    flutter analyze
+    flutter run
     ```
-    Expected: "No issues found!" confirming your Flutter structure matches the new imports and definitions.
+    Expected: App boots and **IMMEDIATELY** shows the Disclaimer & Terms screen with Bilingual text. 
+
+[ ] Test Agreement Logic
+    1. Click the "I Agree" button.
+    2. Expected: The app routes to a white screen saying "Dashboard Placeholder - Awaiting Step 14".
+    3. Close the app completely and rerun `flutter run`.
+    4. Expected: The app should boot directly into the Dashboard Placeholder, completely skipping the Disclaimer.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ WHAT GOT BUILT THIS STEP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[ ] `lib/models/gate_status.dart` — Schema bindings
-[ ] `lib/services/gate_service.dart` — Reads/writes and guards state bounds
-[ ] `lib/services/notification_service.dart` — Broadcasts manual FCMS
-[ ] `lib/config/secrets.dart` — Protects your server tokens
+[ ] `lib/screens/disclaimer_screen.dart` — Custom Material 3 Agreement Gate
+[ ] `lib/main.dart` — Asynchronous route interception logic
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧪 TESTING & VERIFICATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Test 1 — Ignore Enforcement:
-```
-findstr /C:"secrets.dart" .gitignore
-```
-✅ Expected: `.gitignore` protects `secrets.dart` (Add to `.gitignore` yourself if it returns empty!)
-
-Test 2 — Syntax State:
+Test 1 — Syntax State:
 ```
 flutter analyze
 ```
@@ -54,7 +51,7 @@ flutter analyze
 
 ```
 git add .
-git commit -m "Steps 7-9: Finalized Data Layer, RxDart streams, and Spark REST implementation"
+git commit -m "Step 9B: Added mandatory legal disclaimer screen and shared_preferences cache"
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

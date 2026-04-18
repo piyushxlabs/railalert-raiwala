@@ -145,3 +145,26 @@
 **Verification Result:**
 - Models structurally sound. Code static analysis clean. Data architecture ready to plug into UI.
 ---
+
+## Step 9B — Disclaimer & Terms Legal Screen
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Constructed `DisclaimerScreen` enforcing bilingual legal agreements covering lack of App liability and Railway disassociation.
+- Wired asynchronous `SharedPreferences` lookup prior to `runApp` initialization to act as a routing gatekeeper.
+- Configured single-run agreement caching to skip screen on subsequent app closures.
+
+**Files Created:**
+- `lib/screens/disclaimer_screen.dart`
+
+**Files Modified:**
+- `pubspec.yaml` (Added `shared_preferences`)
+- `lib/main.dart` (Injected async routing)
+
+**Packages Installed:**
+- `shared_preferences`
+
+**Verification Result:**
+- SharedPreferences loads securely before initial material mounting.
+---
