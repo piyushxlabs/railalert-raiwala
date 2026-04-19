@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../config/secrets.dart';
+import '../config/session_manager.dart';
 import '../theme/app_theme.dart';
 import 'admin_screen.dart';
 
@@ -37,17 +38,21 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
     }
   }
   
-  void _submitPin() {
+  Future<void> _submitPin() async {
     final enteredStr = _enteredPin.join('');
     // For local evaluation if the PIN hasn't been set by admin yet, allow a bypass for development mode only if it exactly matches the placeholder literal
     final bool bypass = Secrets.gatemanPin == "REPLACE_WITH_AGREED_PIN" && enteredStr == "1234";
 
     if (enteredStr == Secrets.gatemanPin || bypass) {
       HapticFeedback.lightImpact();
-      // Dismiss the bottom sheet
-      Navigator.of(context).pop();
-      // Push the Full Screen Admin overlay
-      Navigator.of(context).push(
+      // Capture Navigator before the async gap — avoids use_build_context_synchronously
+      final navigator = Navigator.of(context);
+      // Persist gateman session so app reopens directly to Admin
+      await SessionManager.setGatemanLoggedIn(true);
+      if (!mounted) return;
+      // Dismiss the bottom sheet then push the Full Screen Admin overlay
+      navigator.pop();
+      navigator.push(
         PageRouteBuilder(
           transitionDuration: const Duration(milliseconds: 200),
           pageBuilder: (_, _, _) => const AdminScreen(),

@@ -5,13 +5,13 @@ import '../theme/app_theme.dart';
 class AdminActionButton extends StatelessWidget {
   final GateStatus targetStatus;
   final bool isLoading;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const AdminActionButton({
     super.key,
     required this.targetStatus,
     this.isLoading = false,
-    required this.onPressed,
+    this.onPressed,
   });
 
   @override
@@ -60,11 +60,8 @@ class AdminActionButton extends StatelessWidget {
           borderRadius: AppTheme.borderRadiusLarge,
           child: Container(
             width: double.infinity,
-            constraints: const BoxConstraints(minHeight: 160.0),
-            padding: const EdgeInsets.symmetric(
-              vertical: AppTheme.spacing24,
-              horizontal: AppTheme.spacing16,
-            ),
+            constraints: const BoxConstraints(minHeight: 100.0),
+            padding: const EdgeInsets.all(24.0),
             alignment: Alignment.center,
             child: isLoading
                 ? const SizedBox(
@@ -79,20 +76,26 @@ class AdminActionButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(iconData, size: 48, color: Colors.white),
-                      const SizedBox(height: AppTheme.spacing12),
-                      Text(
-                        label,
-                        style: AppTheme.textTheme.headlineLarge?.copyWith(
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(iconData, size: 36, color: Colors.white),
+                          const SizedBox(width: AppTheme.spacing12),
+                          Text(
+                            label,
+                            style: AppTheme.textTheme.headlineLarge?.copyWith(
+                              color: Colors.white,
+                              fontSize: 22,
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: AppTheme.spacing4),
                       Text(
                         subLabel,
-                        style: AppTheme.textTheme.bodySmall?.copyWith(
+                        style: AppTheme.textTheme.bodyMedium?.copyWith(
                           color: Colors.white.withValues(alpha: 0.75),
+                          fontSize: 14,
                         ),
                         textAlign: TextAlign.center,
                       ),

@@ -17,17 +17,35 @@ class GateService {
     final statusRef = _db.ref(AppConstants.databaseNodeGateStatus);
     final configRef = _db.ref(AppConstants.databaseNodeAppConfig);
 
-    final statusStream = statusRef.onValue.map((event) => event.snapshot.value as Map<dynamic, dynamic>?);
-    final configStream = configRef.onValue.map((event) => event.snapshot.value as Map<dynamic, dynamic>?);
+    final statusStream = statusRef.onValue.map(
+      (event) => event.snapshot.value as Map<dynamic, dynamic>?,
+    );
+
+    // startWith(null) is CRITICAL: if /app_config node does not exist in Firebase,
+    // the configStream never emits — and combineLatest2 blocks forever, causing
+    // the blank grey dashboard bug. startWith(null) makes it emit immediately so
+    // combineLatest2 can fire as soon as statusStream delivers its first value.
+    final configStream = configRef.onValue
+        .map((event) => event.snapshot.value as Map<dynamic, dynamic>?)
+        .startWith(null);
 
     return Rx.combineLatest2(statusStream, configStream, (statusData, configData) {
-      if (statusData == null) return null;
-      
       bool gatemanActive = true;
       if (configData != null && configData['gateman_active'] != null) {
         gatemanActive = configData['gateman_active'] == true;
       }
-      
+
+      // If the Firebase database is completely empty (no /gate_status node),
+      // returning null here would cause the Commuter Dashboard to show a
+      // shimmering skeleton forever. Instead, seed a default 'OPEN' model locally.
+      if (statusData == null) {
+        return GateStatusModel(
+          status: GateStatus.open,
+          updatedAt: DateTime.now(),
+          gatemanActive: gatemanActive,
+        );
+      }
+
       return GateStatusModel.fromJson(statusData, isGatemanActive: gatemanActive);
     });
   }
@@ -43,16 +61,6 @@ class GateService {
         final str = data['status'] as String?;
         if (str == 'ALERT') currentStatus = GateStatus.alert;
         if (str == 'CLOSED') currentStatus = GateStatus.closed;
-      }
-
-      // Spark Plan Client-Side Validation Logic
-      bool isValid = false;
-      if (currentStatus == GateStatus.open && newStatus == GateStatus.alert) isValid = true;
-      if (currentStatus == GateStatus.alert && newStatus == GateStatus.closed) isValid = true;
-      if (currentStatus == GateStatus.closed && newStatus == GateStatus.open) isValid = true;
-
-      if (!isValid && currentStatus != newStatus) {
-        throw Exception("Invalid state transition from $currentStatus to $newStatus.");
       }
 
       if (currentStatus == newStatus) return; // Prevent duplicate network dispatches

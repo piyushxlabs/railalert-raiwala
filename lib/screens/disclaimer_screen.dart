@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../config/session_manager.dart';
 import '../theme/app_theme.dart';
 import 'commuter_dashboard_screen.dart';
 
@@ -7,8 +7,7 @@ class DisclaimerScreen extends StatelessWidget {
   const DisclaimerScreen({super.key});
 
   Future<void> _acceptTerms(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('has_agreed_to_disclaimer', true);
+    await SessionManager.setHasAcceptedTC(true);
 
     if (context.mounted) {
       Navigator.of(context).pushReplacement(

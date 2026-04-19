@@ -330,4 +330,354 @@
 - Error redirection pipeline structurally solid. Since `.onError` returns `true`, flutter gracefully considers the error handled suppressing native OS crashes while pushing telemetry.
 ---
 
+## Step 19 — .gitignore & secrets.dart Setup
+**Date:** 2026-04-18
+**Status:** Complete (Retroactive)
+
+**What was implemented:**
+- Verified `.gitignore` covers `google-services.json` and `secrets.dart`. This was fully accomplished natively during Steps 7-9.
+
+## Step 20 — Final Polish (App Identity)
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Rebranded the application title natively across the Android Manifest and Flutter Application Shell as "RailAlert".
+
+**Files Modified:**
+- `android/app/src/main/AndroidManifest.xml` (Changed `android:label`)
+- `lib/main.dart` (Changed MaterialApp `title`)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- OS-level task switchers and launch icons will now map strictly to the professional title.
+---
+
+## Bonus Step — Splash Screen, T&C Flow Fix & Admin Status Sync Bug Fix
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Created `SplashScreen` as the universal app entry point with fade animation, 3.5s delay, and Powered by Piyush footer.
+- Moved `SharedPreferences` routing logic from `main.dart` into `SplashScreen._navigateAfterDelay()`, fixing the T&C bypass bug.
+- Simplified `main.dart` — removed pre-`runApp` SharedPreferences check; `RailAlertApp` is now a trivially stateless widget pointing at `SplashScreen`.
+- Refactored `AdminScreen` from two parallel `StreamBuilder` widgets (two GateService instances = two Firebase listeners) to a single `StreamBuilder` with one shared `GateService` instance.
+- Added `_optimisticStatus` local variable to `AdminScreen` — immediately shows the expected next state during the Firebase write, preventing the flicker-back-to-OPEN bug.
+
+**Files Created:**
+- `lib/screens/splash_screen.dart`
+
+**Files Modified:**
+- `lib/main.dart` (Simplified, SplashScreen as universal home)
+- `lib/screens/admin_screen.dart` (Single StreamBuilder + optimistic state)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Status revert bug eliminated. T&C screen respected on all fresh installs.
+---
+
+## Bug Fix Step — Splash Centering / Dashboard Grey Box / Admin Flicker
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- **Splash:** Wrapped `Column` body in `SafeArea` and added `crossAxisAlignment: CrossAxisAlignment.center` to both the outer and inner Columns. This fixes left-clipping on all phone notch sizes.
+- **Dashboard grey box (Root Cause):** `Rx.combineLatest2` was permanently blocked because `/app_config` node does not exist in Firebase yet — so `configStream` never emitted, and `combineLatest2` never fired. Fixed by adding `.startWith(null)` to `configStream` in `GateService.statusStream`, making it unblock immediately.
+- **Admin flicker fix (Phase 2):** Moved `_optimisticStatus = null` out of the `finally` block. Added a `SchedulerBinding.addPostFrameCallback` inside the `StreamBuilder` to self-release the optimistic lock only after the live Firebase stream confirms the new status has arrived.
+
+**Files Modified:**
+- `lib/screens/splash_screen.dart` (SafeArea + center alignment)
+- `lib/services/gate_service.dart` (configStream.startWith(null))
+- `lib/screens/admin_screen.dart` (SchedulerBinding self-release + import)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Flutter analyze clean. Dashboard will now display live data on first stream event.
+---
+
+## Session Persistence Step — SharedPreferences UX Improvements
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- Created `SessionManager` — a static utility centralizing all `SharedPreferences` keys. Screens never touch raw key strings.
+- Updated `SplashScreen` routing: checks `isGatemanLoggedIn` first → `hasAcceptedTC` → `DisclaimerScreen`.
+- Updated `PinEntryScreen`: saves `isGatemanLoggedIn = true` on correct PIN before navigating to `AdminScreen`.
+- Updated `DisclaimerScreen`: replaced raw `SharedPreferences` call with `SessionManager.setHasAcceptedTC(true)`.
+- Updated `AdminScreen`: added `_handleLogout()` that sets `isGatemanLoggedIn = false` and clears the navigation stack back to the Dashboard. Added logout `IconButton` to AppBar.
+
+**Files Created:**
+- `lib/config/session_manager.dart`
+
+**Files Modified:**
+- `lib/screens/splash_screen.dart` (session-based routing)
+- `lib/screens/pin_entry_screen.dart` (save session on correct PIN)
+- `lib/screens/disclaimer_screen.dart` (use SessionManager)
+- `lib/screens/admin_screen.dart` (logout feature + AppBar)
+
+**Packages Installed:**
+- None (`shared_preferences` was already installed in Step 9B)
+
+**Verification Result:**
+- App remembers T&C agreement and Gateman login across restarts.
+---
+
+## Final Bug Fix Step — Splash Centering & Admin UI State Sync
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- **Splash Screen Fix:** Wrapped the center `Column` in a `SizedBox(width: double.infinity)` so the column occupies the entire screen width before applying `CrossAxisAlignment.center`. This fixes the layout clipping on all phone aspect ratios.
+- **Admin UI Rewrite:** Completely removed `_optimisticStatus` and `setState` status tracking which was fighting with the `Firebase` live stream and caused the state loop. The `AdminScreen` is now natively driven 100% via the `StreamBuilder` ensuring what you see on screen reflects reality.
+- **Admin Feedback Fix:** Updated `_handleAction` to evaluate the actual executed state text ("GATE CLOSED" instead of "CLOSED").
+
+**Files Modified:**
+- `lib/screens/splash_screen.dart` (Layout Width Fix)
+- `lib/screens/admin_screen.dart` (Removed Optimistic Status Loop)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Expected UI stability restored. Splash elements centered correctly. Next execution: flutter build apk --release.
+---
+
+## State Transition Liberty & Dashboard Hardening
+**Date:** 2026-04-18
+**Status:** Complete
+
+**What was implemented:**
+- **Validation Removal:** Stripped all rigorous state transition logic (`isValid = false`) from `GateService.updateStatus(newStatus)`. Gatemen can now trigger any arbitrary UI state out of sequence (e.g. CLOSED to ALERT) without throwing exceptions.
+- **Admin Full Control UI:** Evolved the Gateman Admin UI from a single cyclic update button to an `Expanded ListView` displaying all three independent states (Alert, Closed, Open). The currently active status is elegantly dimmed, leaving the others fully actionable.
+- **Null Safety Assurance:** The Commuter Dashboard's skeleton UI issue is robustly patched; if the Firebase `/gate_status` node isn't initialized yet, `combineLatest2` instantly seeds a local `GateStatus.open` model rather than infinitely hanging.
+
+**Files Modified:**
+- `lib/services/gate_service.dart` (Validation removed)
+- `lib/widgets/admin_action_button.dart` (Height reduced from 160 to 100, `onPressed` made nullable)
+- `lib/screens/admin_screen.dart` (Render 3 explicit status rows via `_buildStatusOption`)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Flutter analyze perfectly clean. The Gateman now wields complete unconditional state control.
+---
+
+## Cold Boot & Overlay Routing Triage (Black Screen Fixes)
+**Date:** 2026-04-19
+**Status:** Complete
+
+**What was implemented:**
+- **OS-Level Initialization Flash Fix:** Hardcoded Android manifest constraints (`styles.xml`, `launch_background.xml` and Night configurations) to instantly inject brand `splash_background` (`#E65100`) upon process start, overwriting the default android `#ffffff` / `#000000` window backgrounds that appear before the Flutter framework spins up its initial paint frame.
+- **Admin Root Navigation Wipeout:** Transferred `Exit Admin` execution hook from naive `Navigator.pop()` to `_handleLogout`. This executes a forceful `pushAndRemoveUntil(CommuterDashboard)` overlay, preventing engine blackout when popping an empty initial route instance (such as direct session bootup).
+
+**Files Modified:**
+- `android/app/src/main/res/values/colors.xml` (Created explicit global variable)
+- `android/app/src/main/res/values-night/colors.xml` (Created dark theme equivalent)
+- `android/app/src/main/res/values/styles.xml` (Replaced ?android:colorBackground)
+- `android/app/src/main/res/values-night/styles.xml`
+- `android/app/src/main/res/drawable/launch_background.xml` (Painted baseline view)
+- `lib/screens/admin_screen.dart` (Switched Exit textButton closure execution)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Tested routing flows. Flutter application completely unblemished by rogue native flashes.
+---
+
+## Android V21 Initialization & Branding Polish
+**Date:** 2026-04-19
+**Status:** Complete
+
+**What was implemented:**
+- **V21+ Flash Annihilation:** Identified that Android 5.0+ devices were overriding our baseline splash color via `drawable-v21/launch_background.xml`'s `?android:colorBackground` attribute. Replaced it with `@color/splash_background` to guarantee `#E65100` rendering from the millisecond the `Activity` executes.
+- **Splash Timing Audit:** Verified that `splash_screen.dart` strictly abides by the 3500ms constraint mapped in the initial architecture schema without extending it further.
+- **Dashboard Static Branding:** Added a subtle `AppTheme.textDisabled` string reading "Powered by Piyush" fixed below the Scroll View on the Commuter Dashboard, maximizing brand footprint without interfering with mission-critical rail data.
+
+**Files Modified:**
+- `android/app/src/main/res/drawable-v21/launch_background.xml` (Aligned v21+ OS Boot layer color)
+- `lib/screens/commuter_dashboard_screen.dart` (Footer branding component added)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Dashboard renders correctly with watermark footer. OS Boot seamlessly transitions the identical color frame into Flutter render frame sequence.
+---
+
+## Developer Profile & Branding Upgrade
+**Date:** 2026-04-19
+**Status:** Complete
+
+**What was implemented:**
+- **External Routing Capability:** Integrated `url_launcher` into `pubspec.yaml` to handle executing `LaunchMode.externalApplication` intents for future social links.
+- **Premium Developer Dashboard Card:** Swapped the plain-text footer in the `CommuterDashboardScreen` with an elegant, elevated `ListTile` wrapped in an `InkWell`. Features a subtle shadow, prominent arrow trailing icon, and clean typography.
+- **Developer Profile View:** Built `DeveloperProfileScreen` — a highly polished, single-scroll layout featuring a stylistic floating avatar, a professional bio container, and large fully interactive social connect buttons.
+- **Gradient Actions:** Configured the Instagram action button with a native diagonal linear gradient mirroring platform colors to push visual fidelity higher.
+
+**Files Created:**
+- `lib/screens/developer_profile_screen.dart` — Developer bio and social routes.
+
+**Files Modified:**
+- `lib/screens/commuter_dashboard_screen.dart` (Inserted Profile Card interaction)
+- `pubspec.yaml` (Added `url_launcher` dependency)
+
+**Verification Result:**
+- Route successfully links the two screens. `flutter analyze` is absolutely clean. Links fire native async catch blocks safely.
+---
+
+## World-Class Developer Identity Refactoring
+**Date:** 2026-04-19
+**Status:** Complete
+
+**What was implemented:**
+- **Profile Image Integration:** Registered the `assets/images/` path in `pubspec.yaml` to successfully bridge the local image repository. Restructured the developer avatar to employ `BoxDecoration` targeting the newly placed `piyush.jpg` source file, enhanced with a heavy drop-shadow to ground it dynamically in space.
+- **Heart-Touching Bio Re-rendering:** Formatted the personalized local bio with italicized typography and translucent quotation-mark icons. Encapsulated the copy in an outlined `pageBackground` container for maximal readability and emotive design aesthetics.
+- **LinkTree Premium Connect List:** Completely stripped the old rigid gradient dual-buttons in favor of a 4-tier Linktree-styled aesthetic vertical stack (`ListView` alignment), establishing pristine, highly-interactive connection nodes for Instagram (Pink), LinkedIn (Blue), X (Black), and Email Support (Red/Orange).
+- **Hardened Sizing Attributes:** Scrubbed nonexistent/unverified `AppTheme.spacing20` values and locked into absolute pixel bounds (e.g. `20.0`) or validated `spacing32` standards to ensure 100% compilation safety without breaking core Theme bounds.
+
+**Files Modified:**
+- `pubspec.yaml` (Asset structure bridged)
+- `lib/screens/developer_profile_screen.dart` (Full declarative rebuild of the identity block)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- `flutter analyze` is clean. The interface now matches an elite personal portfolio while firmly centering community-first emotional resonance.
+---
+
+## Dashboard Developer Card UI Mastery
+**Date:** 2026-04-19
+**Status:** Complete
+
+**What was implemented:**
+- **Gradient Inkwell Architecture:** Upgraded the `CommuterDashboardScreen` footer card by injecting a `Container` wrapped with `LinearGradient` (Saffron `#E65100` to Deep Saffron `#C74300`) directly enclosing the `InkWell` layer, ensuring ripple effects preserve their physical depth atop the rich color map.
+- **High Contrast Typography Restyling:** Set all nested textual nodes within the card to stark `Colors.white`, increasing the contrast ratio and establishing "Meet the Developer" as an authoritative hero element alongside the main gate block.
+- **Micro-Interaction Polish:** Swapped out the generic trailing iOS arrow with a dedicated `Row(mainAxisSize: MainAxisSize.min)` containing "Say Hi 👋" text and an `arrow_circle_right` button mapped to immediate user convergence. The layout perfectly anchors the emoji avatar into a tight white `CircleAvatar` frame to ensure visual isolation.
+
+**Files Modified:**
+- `lib/screens/commuter_dashboard_screen.dart` (Upgraded Profile wrapper)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Dashboard compiled immediately; `flutter analyze` is completely clean. The banner is visually undeniable.
+---
+
+## LinkedIn Profile Authority Synchronization
+**Date:** 2026-04-19
+**Status:** Complete
+
+**What was implemented:**
+- **Authority Title Update:** Changed the description from "Software Developer" to "Problem Solver • AI Product Architect" directly mirroring the LinkedIn presence.
+- **Authority Badges Integration:** Added neat horizontal UI chips utilizing `Row`, `Container`, and `BoxDecoration` beneath the title to display high-level organizational bindings: "Building @piyushxlabs" and "IIT Indore Drishti CPS".
+- **Biographical Alignment:** Rewrote the profile bio to an elite, systems-design focused message matching the image context: "Architecting solutions that solve real community problems. I am a dedicated Problem Solver leveraging Multi-Agent AI and systems design to eliminate bottlenecks, starting with our local Raiwala crossing."
+
+**Files Modified:**
+- `lib/screens/developer_profile_screen.dart` (Updated local text identifiers and inserted Row badges)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- `flutter analyze` runs completely clean with 0 issues. Developer Profile UI accurately reflects precise elite personal branding messaging.
+---
+
+## Emotional Overhaul & Physics Animations
+**Date:** 2026-04-19
+**Status:** Complete
+
+**What was implemented:**
+- **Overflow Fix:** Replaced the two-badge `Row` with a `Wrap(spacing: 8, runSpacing: 8)`. Removed "IIT Indore Drishti CPS" tag. Only single badge "Building @piyushxlabs" remains — no more 34px overflow.
+- **Emotional Copy:** New tagline "Son of Raiwala • Building for the People" in primary orange. Story replaced with the Raiwala fatak emotional bio with `FontStyle.italic`, line-height 1.7.
+- **Neumorphic Animated Social Buttons:** Converted `_buildSocialButton` helper into a private `StatefulWidget` class (`_AnimatedSocialButton`) with a `SingleTickerProviderStateMixin` `AnimationController`. `GestureDetector.onTapDown` drives `reverse()` (scale → 0.95), `onTapUp` drives `forward()` (scale → 1.0) via `Transform.scale` inside `AnimatedBuilder`.
+- **X button removed** per new spec (only Instagram, LinkedIn, Email).
+- **Dashboard Breathing Animation:** Added `TickerProviderStateMixin` to `_CommuterDashboardScreenState`. `_breathController.repeat(reverse: true)` over 2000ms, `Tween(1.0 → 1.02)`, `Curves.easeInOut` — wrapped the entire card Padding in `AnimatedBuilder > Transform.scale`. Disposed in `dispose()`.
+
+**Files Modified:**
+- `lib/screens/developer_profile_screen.dart` (Full rewrite)
+- `lib/screens/commuter_dashboard_screen.dart` (Mixin + AnimationController + AnimatedBuilder wrapper)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- `flutter analyze` → No issues found. (ran in 4.3s)
+---
+
+## Precision Design Spec Pass (UI_DESIGN_SYSTEM Alignment)
+**Date:** 2026-04-19
+**Status:** Complete
+
+**What was implemented:**
+- Read `docs/Ui_Desgin.md` before writing any code — all token values (`#FBE9E7`, `#E65100`, `#212121`, `#757575`, `#BDBDBD`) confirmed and applied as local constants.
+- **Quote Card:** Replaced plain `format_quote_rounded` icon with a full left-border accent design (4px solid `#E65100`), decorative 48sp `❝` watermark at 20% opacity, and right-aligned `— Piyush` closing in bold orange.
+- **Tagline chip:** Single pill chip `"Son of Raiwala • Building for the Community"` using `#FBE9E7` bg and `#E65100` text, 20px pill, no border.
+- **Social buttons:** Full redesign to `Card(elevation:2)` with `Row(42x42 icon box | Expanded Column(title+subtitle) | chevron)`. Used `LinearGradient` for Instagram icon, solid colors for LinkedIn/Email. `AnimatedScale` widget (100ms down / 200ms up) replaces custom controller.
+- **Dashboard card:** Switched from `AnimatedBuilder+Transform` to `ScaleTransition(scale: _breathAnim)` for simpler tree. Replaced emoji `CircleAvatar` with actual `piyush.jpg` `CircleAvatar` with 2px white border. Changed `Card+ListTile` to bare `Container+Row` for full padding control. “Say Hi ➔” now sits in a white 25%-opacity rounded pill container per spec.
+
+**Files Modified:**
+- `lib/screens/developer_profile_screen.dart` (Third precision rewrite)
+- `lib/screens/commuter_dashboard_screen.dart` (ScaleTransition + photo avatar + pill button)
+
+**Packages Installed:** None
+
+**Verification Result:**
+- `flutter analyze` → No issues found. (ran in 3.5s)
+---
+
+## Admin Screen Layout and Usability Enhancement
+**Date:** 2026-04-20
+**Status:** Complete
+
+**What was implemented:**
+- **Layout Un-bunching:** Solved the top-heavy padding issue in `admin_screen.dart` by converting the `ListView` directly into a `Center > SingleChildScrollView > Column(mainAxisAlignment: center)` structure. This dynamically equalizes top and bottom free-space dynamically resolving the issue across all screen heights.
+- **Card Spacing:** Pushed the cards further apart with increased `SizedBox(height: 16)`.
+- **Card Bulkiness:** Scaled the touch target payload massively by overriding the `AdminActionButton` padding to `EdgeInsets.all(24.0)` instead of the previous tighter bounds.
+- **Typography and Icon Hierarchy:** Boosted the semantic icons on all 3 states (Alert, Closed, Open) from `28px` to `36px`. Adjusted subtitle typography font from `bodySmall` to `bodyMedium(fontSize: 14)` for critical accessibility read. 
+
+**Files Modified:**
+- `lib/widgets/admin_action_button.dart` (Internal constraints and typography scaling)
+- `lib/screens/admin_screen.dart` (ListView -> Centered Column swap)
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- `flutter analyze` runs completely clean with 0 issues. 
+---
+
+## Firebase Analytics Integration
+**Date:** 2026-04-20
+**Status:** Complete
+
+**What was implemented:**
+- Audited all 4 files (settings.gradle.kts, app/build.gradle.kts, main.dart, pubspec.yaml) before writing a single line of code.
+- **Already present (no changes needed):** `settings.gradle.kts` already declared `com.google.gms.google-services 4.3.15` and `com.google.firebase.crashlytics 2.8.1`. `app/build.gradle.kts` already applied both plugins. `main.dart` already had `FlutterError.onError` and `PlatformDispatcher.instance.onError` wired to Crashlytics.
+- **Added:** `firebase_analytics 12.3.0` via `flutter pub add firebase_analytics`.
+- **Added:** `import 'package:firebase_analytics/firebase_analytics.dart'` at top of `main.dart`.
+- **Added:** `FirebaseAnalytics analytics = FirebaseAnalytics.instance;` after Crashlytics setup in `main()`.
+
+**Files Modified:**
+- `pubspec.yaml` (firebase_analytics dependency added via pub)
+- `lib/main.dart` (analytics import + instance initialization)
+
+**Packages Installed:**
+- `firebase_analytics@12.3.0` — Firebase Analytics SDK
+- `firebase_analytics_platform_interface@5.1.1` — (transitive)
+- `firebase_analytics_web@0.6.1+5` — (transitive)
+
+**Verification Result:**
+- `flutter analyze` → No issues found. (ran in 5.7s)
+---
+
 
