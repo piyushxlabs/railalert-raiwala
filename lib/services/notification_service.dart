@@ -30,48 +30,44 @@ class NotificationService {
   }
 
   Future<void> sendDirectPushNotification(GateStatus newStatus) async {
-    if (Secrets.fcmServerKey == "REPLACE_WITH_REAL_KEY" || Secrets.fcmServerKey.isEmpty) {
-      debugPrint("FCM Server Key not configured, skipping HTTP push delivery.");
+    // Guard: skip if secret key is unconfigured (dev environment)
+    if (Secrets.vercelSecretKey == 'REPLACE_WITH_VERCEL_SECRET_KEY' ||
+        Secrets.vercelSecretKey.isEmpty) {
+      debugPrint('[NotificationService] Vercel secret not configured — skipping push.');
       return;
     }
 
-    String title;
-    String body;
+    // Convert enum to the string the Vercel backend expects
+    final String statusStr;
     if (newStatus == GateStatus.alert) {
-      title = "⚠️ Raiwala Gate — Train Coming";
-      body = "Gate closing soon. Plan your route now.";
+      statusStr = 'ALERT';
     } else if (newStatus == GateStatus.closed) {
-      title = "🔴 Raiwala Gate Closed";
-      body = "Gate is closed. Expect delays.";
+      statusStr = 'CLOSED';
     } else {
-      title = "🟢 Raiwala Gate Open";
-      body = "Gate is open. You can proceed.";
+      statusStr = 'OPEN';
     }
 
+    // Fire-and-forget: UI must never block or crash on notification failure
     try {
       final response = await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'key=${Secrets.fcmServerKey}',
-        },
+        Uri.parse(AppConstants.vercelNotifyUrl),
+        headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'to': '/topics/${AppConstants.fcmTopicGateStatus}',
-          'notification': {
-            'title': title,
-            'body': body,
-          },
-          'priority': 'high'
+          'newStatus': statusStr,
+          'secret_key': Secrets.vercelSecretKey,
         }),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint("FCM successfully sent from client.");
+        debugPrint('[NotificationService] Vercel FCM dispatch OK for status=$statusStr');
       } else {
-        debugPrint("Failed to send FCM: Code ${response.statusCode} - ${response.body}");
+        debugPrint(
+          '[NotificationService] Vercel responded ${response.statusCode}: ${response.body}',
+        );
       }
     } catch (e) {
-      debugPrint("FCM REST exception: $e");
+      // Never rethrow — a notification failure must not affect gate status UX
+      debugPrint('[NotificationService] Vercel POST exception: $e');
     }
   }
 }

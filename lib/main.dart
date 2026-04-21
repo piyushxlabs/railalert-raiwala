@@ -7,6 +7,15 @@ import 'dart:ui';
 import 'config/firebase_options.dart';
 import 'theme/app_theme.dart';
 import 'screens/splash_screen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'services/notification_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  debugPrint("Handling a background message: ${message.messageId}");
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +23,26 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Configure flutter_local_notifications to create our high-priority channel
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'gate_status_channel', // ID
+    'Gate Status Alerts', // name
+    description: 'Critical notifications for gate opening/closing',
+    importance: Importance.max,
+    sound: RawResourceAndroidNotificationSound('train_horn'), 
+    playSound: true,
+  );
+
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Initialize FCM and request permissions (fire-and-forget to avoid splash screen deadlock)
+  NotificationService().initFCM();
 
   // Enable offline persistence for Direct writes/reads
   FirebaseDatabase.instance.setPersistenceEnabled(true);

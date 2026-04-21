@@ -68,3 +68,48 @@ AnimatedScale for Tactile Buttons — Replaced the two-state `AnimationControlle
 Admin Usability Layout — Transitioned from standard un-bounded `ListView` (which anchors to top constraints by default) to an embedded `Center > SingleChildScrollView > Column(mainAxisAlignment: MainAxisAlignment.center)` pattern. This leverages Flutter's auto-spacing algorithms to float the dense interaction layer optimally within any aspect ratio dynamically ensuring Gatemen don't strain fingers reaching to high bounding boxes on tall industrial phones.
 
 Firebase Analytics Pre-audit — Before running `flutter pub add`, all four integration touchpoints were audited: `settings.gradle.kts` (plugin declaration), `app/build.gradle.kts` (plugin apply), `lib/main.dart` (SDK init), and `pubspec.yaml` (dependency). Crashlytics Gradle setup was already 100% present from a prior FlutterFire configuration run. Only the Dart SDK package (`firebase_analytics`) and its `FirebaseAnalytics.instance` initialization line were missing. No Gradle files were modified.
+
+Vercel FCM Proxy Architecture — FCM topic messaging requires a server-side Firebase Admin SDK (cannot be called from Flutter directly). Instead of Firebase Cloud Functions (requires Blaze plan), a free Vercel serverless function acts as a thin authenticated proxy: Flutter → HTTPS POST (with secret_key) → Vercel `/api/notify` → firebase-admin.messaging().send() → FCM → all subscribed devices. The `FIREBASE_SERVICE_ACCOUNT` env var holds the entire service account JSON string — parsed once at cold start and reused across warm invocations. `NOTIFY_SECRET_KEY` is a pre-shared secret verified on every request to prevent unauthorized notification abuse.
+
+---
+## Step X — Vercel FCM Payload Integration
+**Decision:** Handled Vercel HTTP interaction using an asynchronous, non-blocking `try/catch` wrapper inside `GateService.updateStatus`, deliberately omitting `rethrow`.
+**Reason:** If the Vercel backend goes down, or the network timeouts during the push notification, it must not disrupt the core capability of the app to change the actual Firebase Realtime Database status (which succeeds moments before).
+**Impact:** Client app guarantees DB stability even if FCM notifications fail to dispatch.
+---
+
+## FCM Initialization Triage
+**Decision:** Handled FCM initialization strictly inside `main.dart` immediately after `Firebase.initializeApp()` rather than delegating it lazily to a specific screen's `initState()`.
+**Reason:** Ensures the FCM subsystem—including the critical background isolate handler `_firebaseMessagingBackgroundHandler`—is firmly registered to the Dart VM before any UI paints. This guarantees background pushes are not lost during cold boots.
+**Impact:** `NotificationService().initFCM()` blocks `runApp` momentarily to establish cross-platform permission contracts early.
+---
+
+Step Linter Fix — No deviations from spec.
+
+---
+## FCM Android Custom Channel Registry
+**Decision:** Hardcoded Android Notification Channel creation using `flutter_local_notifications` prior to any FCM interactions, strictly over-riding the Custom Sound mapping and defining `Importance.max`.
+**Reason:** Android 8.0+ explicitly ignores `.mp3` background payloads unless the OS Channel evaluating them intrinsically possesses those mapping rights at the moment of its creation. Firebase's default zero-context channel creation permanently strips custom sounds.
+**Impact:** `train_horn` is mapped securely. However, Android OS makes channels immutable. Any future alteration of this channel's sound/behavior requires entirely deleting and recreating the channel ID, or a complete App Uninstall by commuters.
+---
+
+## Core Library Desugaring Requirement
+**Decision:** Handled the `flutter_local_notifications` Java 8 API failure explicitly by configuring `isCoreLibraryDesugaringEnabled = true` bound to JVM 17.
+**Reason:** Flutter relies intrinsically on backwards-compatible Android configurations. Notification capabilities inherently rely on modern Android system intents requiring the `desugar_jdk_libs` backport to maintain compilation safety.
+**Impact:** Eliminates `:app:checkDebugAarMetadata` crashing errors immediately restoring native `.apk` packaging functionality.
+---
+
+Step Desugaring Version Bump — No deviations from spec.
+
+---
+## Deadlock Regression on FCM Init
+**Decision:** Executed `NotificationService().initFCM()` as a fire-and-forget asynchronous background process instead of awaiting it inside `main()`.
+**Reason:** Flutter UI rendering blocks asynchronously on `await` directives placed prior to `runApp()`. Requesting OS-level user permission dialogues requires an active visual canvas to float upon. Waiting inherently triggers an OS-level deadlock where the App awaits permission to mount the UI, but the OS awaits an active UI application instance to render the permission dialogue box over.
+**Impact:** Splash Screen successfully bypasses the invisible native wait state while FCM handles Topic subscriptions concurrently in the background.
+---
+
+## Release Build R8 Custom Sound Stripping
+**Decision:** Handled Android R8 resource minification stripping dynamic audio payloads by injecting `tools:keep="@raw/*"` directly in `/res/raw/keep.xml`.
+**Reason:** The Flutter/Dart engine and FCM rely on dynamic String intents to summon audio files located natively inside the project payload. Because the Android compiler detects zero static Java/Kotlin references to the `.mp3` asset during `--release` compilation, it incorrectly assumes it is dead-code and strips the `.mp3`. `keep.xml` forces static retention entirely bypassing the analyzer.
+**Impact:** `flutter build apk --release` executes perfectly while fully integrating custom audio capabilities globally.
+---

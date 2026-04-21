@@ -7,6 +7,9 @@ class AppConstants {
   // FCM Configuration
   static const String fcmTopicGateStatus = 'gate-status-alerts';
 
+  // Vercel Serverless Backend
+  static const String vercelNotifyUrl = 'https://project-bwg1z.vercel.app/api/notify';
+
   // Admin Access Constraints
   static const int adminTapCountThreshold = 5;
   static const int adminTapWindowMs = 2000;

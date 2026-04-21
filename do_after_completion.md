@@ -1,58 +1,47 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# FIREBASE ANALYTICS COMPLETION CHECKLIST
+# STEP COMPLETION CHECKLIST
+# Release Build R8 Audio Fix
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⏰ BEFORE running the next prompt — do these first:
 
-[ ] Verify firebase_analytics is in pubspec.yaml:
-    Expected: firebase_analytics: ^12.3.0 listed under dependencies
+[ ] Re-compile a Fresh Production Build!
+    ```
+    flutter clean
+    flutter build apk --release
+    ```
 
-[ ] Verify main.dart now has both imports:
-    Expected:
-      import 'package:firebase_analytics/firebase_analytics.dart';
-      import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ WHAT GOT BUILT THIS STEP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] File: `android/app/src/main/res/raw/keep.xml` — Android minifier bypass configurations deployed securely guaranteeing `train_horn.mp3` anchors to the executable block dynamically.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧪 TESTING & VERIFICATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Test 1 — Static Analysis:
-```
-flutter analyze
-```
-✅ Expected: No issues found.
-❌ If errors: Check firebase_analytics version compatibility with firebase_core.
+Test 1 — Evaluate Execution State:
+[ ] Look at `build\app\outputs\flutter-apk\app-release.apk`
+✅ Expected: File created without dropping payloads. (File size should be larger by your MP3's weight).
 
-Test 2 — Release Build Compiles:
-```
-flutter build apk --release
-```
-✅ Expected: BUILD SUCCESSFUL, APK at build/app/outputs/flutter-apk/app-release.apk
-❌ If D8/Gradle errors: Run flutter clean then retry.
-
-Test 3 — DebugConsole Analytics Events:
-Install debug APK on device. Open Firebase Console > Analytics > DebugView.
-Launch the app.
-✅ Expected: first_open and session_start events appear within 60 seconds.
-❌ If no events: Ensure google-services.json is the correct production file.
-
-Test 4 — Crashlytics Integration Check:
-In Firebase Console > Crashlytics > your app.
-✅ Expected: App appears as "SDK detected" if at least one build was run.
+Test 2 — Full E2E Verification Check:
+[ ] Transfer `.apk` to physical android device natively. 
+[ ] Send Firebase Event
+✅ Expected: The notification arrives instantly in the System Tray (heads-up) and violently blasts the `train_horn.mp3` even though code was fully minified!
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📦 GIT COMMIT
-(Run ONLY after all above checks pass)
+(Run this ONLY after all above checks pass)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ```
 git add .
-git commit -m "Step: Firebase Analytics integration — firebase_analytics 12.3.0 initialized in main()"
+git commit -m "Fix: ensure Android R8 Minifier ignores /raw/ audio files during release builds"
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✋ DO NOT proceed to build release until:
-[ ] flutter analyze passes
-[ ] firebase_analytics visible in pubspec.lock
+✋ DO NOT proceed to the next step until:
+[ ] All checks show ✅
 [ ] Git commit is done
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

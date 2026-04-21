@@ -3,11 +3,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:rxdart/rxdart.dart';
 import '../models/gate_status.dart';
 import '../config/app_constants.dart';
-import 'notification_service.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class GateService {
   final FirebaseDatabase _db = FirebaseDatabase.instance;
-  final NotificationService _notificationService = NotificationService();
 
   Stream<bool> get connectionStream {
     return _db.ref('.info/connected').onValue.map((event) => event.snapshot.value == true);
@@ -77,13 +77,38 @@ class GateService {
       };
 
       await statusRef.set(payload);
-
-      // Trigger temporary FCM Push directly from client due to lack of functions
-      await _notificationService.sendDirectPushNotification(newStatus);
+      
+      // Trigger Vercel Notification Serverless Function
+      await _triggerVercelNotification(statusStr);
       
     } catch (e) {
       debugPrint("GateService updateStatus Error: $e");
       rethrow; // Surges back to UI for StatusSnackbar display
+    }
+  }
+
+  Future<void> _triggerVercelNotification(String status) async {
+    try {
+      final url = Uri.parse('https://project-bwg1z.vercel.app/api/notify');
+      final body = jsonEncode({
+        "newStatus": status,
+        "secret_key": "PiyushRaiwala2026",
+      });
+
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint("Vercel Notification Sent: ${response.body}");
+      } else {
+        debugPrint("Vercel Notification Failed: ${response.statusCode} - ${response.body}");
+      }
+    } catch (e) {
+      debugPrint("Vercel HTTP call Error: $e");
+      // Not rethrowing to prevent app crash if notification fails
     }
   }
 }
