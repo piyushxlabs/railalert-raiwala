@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import '../config/session_manager.dart';
+
 import '../theme/app_theme.dart';
-import 'admin_screen.dart';
-import 'commuter_dashboard_screen.dart';
-import 'disclaimer_screen.dart';
+import 'language_selection_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -36,24 +34,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     if (!mounted) return;
 
-    final gatemanLoggedIn = await SessionManager.isGatemanLoggedIn();
-    final hasAcceptedTC = await SessionManager.hasAcceptedTC();
-
-    if (!mounted) return;
-
-    Widget destination;
-    if (gatemanLoggedIn) {
-      destination = const AdminScreen();
-    } else if (hasAcceptedTC) {
-      destination = const CommuterDashboardScreen();
-    } else {
-      destination = const DisclaimerScreen();
-    }
-
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 400),
-        pageBuilder: (_, _, _) => destination,
+        pageBuilder: (_, _, _) => const LanguageSelectionScreen(),
         transitionsBuilder: (_, animation, _, child) {
           return FadeTransition(opacity: animation, child: child);
         },

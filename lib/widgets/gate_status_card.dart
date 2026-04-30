@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../models/gate_status.dart';
 import '../theme/app_theme.dart';
+import '../services/translation_service.dart';
 
 class GateStatusCard extends StatefulWidget {
   final GateStatusModel? statusModel;
@@ -99,13 +100,13 @@ class _GateStatusCardState extends State<GateStatusCard> with SingleTickerProvid
           const Icon(Icons.pause_circle_filled, size: 48, color: AppTheme.textDisabled),
           const SizedBox(height: AppTheme.spacing16),
           Text(
-            "SERVICE PAUSED", 
+            TranslationService.translate('service_paused'), 
             style: AppTheme.textTheme.headlineLarge?.copyWith(color: AppTheme.textDisabled),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppTheme.spacing8),
           Text(
-            "Gateman has paused regular updates", 
+            TranslationService.translate('service_paused_subtitle'), 
             style: AppTheme.textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary),
             textAlign: TextAlign.center,
           ),
@@ -128,24 +129,24 @@ class _GateStatusCardState extends State<GateStatusCard> with SingleTickerProvid
         bgColor = AppTheme.successSubtle;
         borderColor = AppTheme.successBorder;
         primaryColor = AppTheme.success;
-        label = "GATE OPEN";
-        subtitle = "Road is clear — proceed normally";
+        label = TranslationService.translate('gate_open');
+        subtitle = TranslationService.translate('gate_open_subtitle');
         iconData = Icons.check_circle;
         break;
       case GateStatus.alert:
         bgColor = AppTheme.warningSubtle;
         borderColor = AppTheme.warningBorder;
         primaryColor = AppTheme.warning;
-        label = "⚠ TRAIN COMING";
-        subtitle = "Gate closing soon — plan your route";
+        label = TranslationService.translate('gate_alert');
+        subtitle = TranslationService.translate('gate_alert_subtitle');
         iconData = Icons.warning;
         break;
       case GateStatus.closed:
         bgColor = AppTheme.dangerSubtle;
         borderColor = AppTheme.dangerBorder;
         primaryColor = AppTheme.danger;
-        label = "GATE CLOSED";
-        subtitle = "Wait or take an alternate route";
+        label = TranslationService.translate('gate_closed');
+        subtitle = TranslationService.translate('gate_closed_subtitle');
         iconData = Icons.cancel;
         break;
     }

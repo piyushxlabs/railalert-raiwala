@@ -855,3 +855,223 @@
 **Verification Result:**
 - Native Android dependency resolution safely maps dynamic resources globally.
 ---
+
+## Gateman Registration UI Phase 1
+**Date:** 2026-04-21
+**Status:** Complete
+
+**What was implemented:**
+- Defined `GatemanRegistrationModel` strictly wrapping properties: fullName, phoneNumber, gatemanId, crossingName, isVerified, and submittedAt containing `fromJson` and `toJson` serialization endpoints.
+- Injected a new 'Register as Official Gateman' blue-themed material card layout inside the Commuter Dashboard (placed dynamically above the developer profile footer) ensuring compliance with the UI typography and `AppTheme` margins.
+
+**Files Created:**
+- `lib/models/gateman_registration.dart`
+
+**Files Modified:**
+- `lib/screens/commuter_dashboard_screen.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Native components wrap flawlessly without invoking BottomOverflowed artifacts.
+---
+
+## Gateman Registration UI Phase 2
+**Date:** 2026-04-21
+**Status:** Complete
+
+**What was implemented:**
+- Constructed `GatemanTermsScreen` housing a strict legal compliance layout validating Railway staff authorization boundaries alongside an "I Agree & Continue" footer.
+- Engaged Flutter `Navigator.push` hooking the entrycard organically into the router stack securely over the primary commuter dashboard feed.
+
+**Files Created:**
+- `lib/screens/gateman_terms_screen.dart`
+
+**Files Modified:**
+- `lib/screens/commuter_dashboard_screen.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Router bindings connected statically inside Material tree eliminating navigation exceptions.
+---
+
+## Gateman Registration UI Phase 3
+**Date:** 2026-04-21
+**Status:** Complete
+
+**What was implemented:**
+- Constructed `GatemanRegistrationScreen` leveraging localized `FormState` validations managing Gateman schema configurations prior to broadcast.
+- Wired payload synchronization directly to `FirebaseDatabase` injecting dynamically generated `GatemanRegistrationModel.toJson()` assets asynchronously into the `/gateman_registrations` subpath.
+- Rewired `GatemanTermsScreen`'s positive confirmation event explicitly firing `Navigator.pushReplacement` transferring ownership securely to the data-entry frame.
+
+**Files Created:**
+- `lib/screens/gateman_registration_screen.dart`
+
+**Files Modified:**
+- `lib/screens/gateman_terms_screen.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Native State validation processes smoothly linking data objects securely into Firebase NoSQL schema.
+---
+
+## Pivot Legal Compliance Update
+**Date:** 2026-04-21
+**Status:** Complete
+
+**What was implemented:**
+- Unwound Gateman Registration functionalities eliminating Gateman PII collections completely from codebase logic streams.
+- Hardwired UI to enforce localized legal warnings natively overriding explicit onboarding.
+- Eliminated `SessionManager.hasAcceptedTC()` logical evaluations in routing to aggressively loop organic commuter sessions back onto the `DisclaimerScreen` unconditionally upon initialization.
+
+**Files Created:**
+- `lib/screens/legal_disclaimer_screen.dart`
+
+**Files Modified:**
+- `lib/screens/splash_screen.dart`
+- `lib/screens/commuter_dashboard_screen.dart`
+
+**Files Deleted:**
+- `lib/screens/gateman_registration_screen.dart`
+- `lib/models/gateman_registration.dart`
+- `lib/screens/gateman_terms_screen.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Unauthenticated startup routes trap natively into Disclaimer logic boundaries correctly.
+---
+
+## Explicit FCM Consent Gate
+**Date:** 2026-04-21
+**Status:** Complete
+
+**What was implemented:**
+- Eradicated automated background triggers for `NotificationService().initFCM()` isolating app load from push permissions organically.
+- Rewrote `LegalDisclaimerScreen` into an asynchronous explicit gateway bridging consent requirements.
+- Wired standard exit events securely mapped to `SystemNavigator.pop()` closing execution upon decline events naturally.
+
+**Files Created:**
+- None
+
+**Files Modified:**
+- `lib/main.dart`
+- `lib/screens/legal_disclaimer_screen.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Static compilation resolves safely avoiding route loop traps organically.
+---
+
+## Digital Consent Audit Logging
+**Date:** 2026-04-21
+**Status:** Complete
+
+**What was implemented:**
+- Constructed `logConsent()` inside the FCM Notification flow.
+- Wired Firebase Realtime Database asynchronous connections generating silent consent metadata structs `(fcm_token, timestamp, platform)` natively matching GDPR signature logging structures inherently.
+- Re-architected disclaimer execution bindings sequentially injecting signature uploads safely before router bypass mechanisms trigger organically.
+
+**Files Created:**
+- None
+
+**Files Modified:**
+- `lib/services/notification_service.dart`
+- `lib/screens/legal_disclaimer_screen.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Static compilation resolves safely. Signature logging hooks organically executing RTDB network bounds natively.
+---
+
+## Consolidate Startup Disclaimer Flow
+**Date:** 2026-04-30
+**Status:** Complete
+
+**What was implemented:**
+- Consolidated dual-layered Disclaimer loops organically migrating Consent Logic fully backwards mapping against the root `DisclaimerScreen`.
+- Stripped embedded UI legal assets off `CommuterDashboardScreen` organically maintaining only core status assets natively.
+- Eliminated legacy file artifacts safely removing `legal_disclaimer_screen.dart`.
+
+**Files Created:**
+- None
+
+**Files Modified:**
+- `lib/screens/disclaimer_screen.dart`
+- `lib/screens/commuter_dashboard_screen.dart`
+
+**Files Deleted:**
+- `lib/screens/legal_disclaimer_screen.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Static compilation resolves safely avoiding dead-import traps natively.
+---
+
+## Bilingual (Hindi & English) Accessibility System
+**Date:** 2026-04-30
+**Status:** Complete
+
+**What was implemented:**
+- Constructed `TranslationService` hosting a local dictionary (`_translations`) for rapid O(1) state resolution tied to a global `ValueNotifier<String>`.
+- Built `LanguageSelectionScreen` handling first-time application interactions securely setting global language parameters dynamically prior to GDPR/Consent evaluations natively.
+- Abstracted hardcoded strings off `DisclaimerScreen`, `CommuterDashboardScreen`, and `GateStatusCard` naturally mapping them to `TranslationService.translate()`.
+- Adjusted `SplashScreen` router evaluations explicitly landing cold boots squarely on language selection inherently avoiding English-defaults organically.
+
+**Files Created:**
+- `lib/services/translation_service.dart`
+- `lib/screens/language_selection_screen.dart`
+
+**Files Modified:**
+- `lib/screens/splash_screen.dart`
+- `lib/screens/disclaimer_screen.dart`
+- `lib/screens/commuter_dashboard_screen.dart`
+- `lib/widgets/gate_status_card.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- Static Compilation matches mapping hashes strictly returning valid local strings cleanly organically.
+---
+
+## Admin Backdoor Deletion Phase
+**Date:** 2026-04-30
+**Status:** Complete
+
+**What was implemented:**
+- Safely extracted the `AppConstants.adminTapCountThreshold` listener (`GestureDetector`) mapping natively out of `lib/widgets/app_logo.dart`.
+- Permanently hard-deleted all active database write interfaces (`lib/screens/admin_screen.dart`, `pin_entry_screen.dart`) locking the compiled binary purely into a one-way telemetry stream organically.
+- Flushed all administrative variables inside `splash_screen.dart` blocking any session override attempts natively.
+
+**Files Created:**
+- None
+
+**Files Modified:**
+- `lib/widgets/app_logo.dart`
+- `lib/screens/commuter_dashboard_screen.dart`
+- `lib/screens/splash_screen.dart`
+
+**Files Deleted:**
+- `lib/screens/admin_screen.dart`
+- `lib/screens/pin_entry_screen.dart`
+- `lib/widgets/admin_action_button.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- `flutter analyze` completed safely returning 0 errors. Dashboard executes gracefully devoid of backend triggers natively.
+---

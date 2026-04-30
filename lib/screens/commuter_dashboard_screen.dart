@@ -5,7 +5,7 @@ import '../widgets/gate_status_card.dart';
 import '../widgets/offline_banner.dart';
 import '../widgets/app_logo.dart';
 import '../theme/app_theme.dart';
-import 'pin_entry_screen.dart';
+import '../services/translation_service.dart';
 import 'developer_profile_screen.dart';
 
 class CommuterDashboardScreen extends StatefulWidget {
@@ -41,15 +41,6 @@ class _CommuterDashboardScreenState extends State<CommuterDashboardScreen>
     super.dispose();
   }
 
-  void _handleAdminTrigger() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => const PinEntryScreen(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,10 +67,10 @@ class _CommuterDashboardScreenState extends State<CommuterDashboardScreen>
               ),
               child: Row(
                 children: [
-                  AppLogo(onAdminTrigger: _handleAdminTrigger),
+                  const AppLogo(),
                   Expanded(
                     child: Text(
-                      "Raiwala Crossing",
+                      TranslationService.translate('dashboard_title'),
                       style: AppTheme.textTheme.titleMedium,
                       textAlign: TextAlign.center,
                     ),
@@ -111,6 +102,8 @@ class _CommuterDashboardScreenState extends State<CommuterDashboardScreen>
                 ),
               ),
             ),
+            
+
             
             // Developer Profile Card Footer — breathing animation
             ScaleTransition(
@@ -161,22 +154,22 @@ class _CommuterDashboardScreenState extends State<CommuterDashboardScreen>
                         ),
                         const SizedBox(width: 14),
                         // Text block
-                        const Expanded(
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Meet the Developer 👋',
-                                style: TextStyle(
+                                TranslationService.translate('meet_developer'),
+                                style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white,
                                 ),
                               ),
-                              SizedBox(height: 3),
+                              const SizedBox(height: 3),
                               Text(
-                                'Made with ❤️ for Raiwala',
-                                style: TextStyle(
+                                TranslationService.translate('made_with_love'),
+                                style: const TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
                                   color: Color(0xD9FFFFFF), // 85% white
@@ -193,9 +186,9 @@ class _CommuterDashboardScreenState extends State<CommuterDashboardScreen>
                             color: Colors.white.withValues(alpha: 0.25),
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: const Text(
-                            'Say Hi ➔',
-                            style: TextStyle(
+                          child: Text(
+                            TranslationService.translate('say_hi'),
+                            style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: Colors.white,

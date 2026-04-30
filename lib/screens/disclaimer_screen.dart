@@ -1,21 +1,43 @@
 import 'package:flutter/material.dart';
-import '../config/session_manager.dart';
+import 'package:flutter/services.dart';
 import '../theme/app_theme.dart';
+import '../services/notification_service.dart';
+import '../services/translation_service.dart';
 import 'commuter_dashboard_screen.dart';
 
-class DisclaimerScreen extends StatelessWidget {
+class DisclaimerScreen extends StatefulWidget {
   const DisclaimerScreen({super.key});
 
-  Future<void> _acceptTerms(BuildContext context) async {
-    await SessionManager.setHasAcceptedTC(true);
+  @override
+  State<DisclaimerScreen> createState() => _DisclaimerScreenState();
+}
 
-    if (context.mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => const CommuterDashboardScreen(),
-        ),
-      );
-    }
+class _DisclaimerScreenState extends State<DisclaimerScreen> {
+  bool _isLoading = false;
+
+  Future<void> _handleAgree() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Request permissions and hook into background topic streams ONLY AFTER explicit user approval
+    await NotificationService().initFCM();
+    
+    // Log explicit token consent natively
+    await NotificationService().logConsent();
+
+    if (!mounted) return;
+    
+    // Explicit route push overriding standard flows
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const CommuterDashboardScreen()),
+    );
+  }
+
+  void _handleDisagree() {
+    // Explicit System Abort
+    SystemNavigator.pop();
   }
 
   @override
@@ -23,8 +45,15 @@ class DisclaimerScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.pageBackground,
       appBar: AppBar(
-        title: const Text("Disclaimer / अस्वीकरण"),
+        title: Text(TranslationService.translate('disclaimer_appbar_title')),
+        backgroundColor: Colors.white,
+        foregroundColor: AppTheme.textPrimary,
+        elevation: 0,
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.0),
+          child: Container(color: AppTheme.borderDefault, height: 1.0),
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -33,78 +62,151 @@ class DisclaimerScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(AppTheme.spacing24),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _buildSection(
-                      "1. Not Official App / आधिकारिक ऐप नहीं",
-                      "This is NOT an official app of Indian Railways.\n"
-                      "यह भारतीय रेलवे का आधिकारिक ऐप नहीं है।",
-                      context,
+                    const SizedBox(height: AppTheme.spacing16),
+                    const Icon(
+                      Icons.gavel_rounded,
+                      color: Color(0xFFC62828), // CLOSED / Danger color
+                      size: 72,
                     ),
                     const SizedBox(height: AppTheme.spacing24),
-                    _buildSection(
-                      "2. Community Driven / समुदाय संचालित",
-                      "This is a community-driven app for commuter convenience only.\n"
-                      "यह केवल यात्रियों की सुविधा के लिए एक समुदाय संचालित ऐप है।",
-                      context,
+                    Text(
+                      TranslationService.translate('disclaimer_notice_title'),
+                      style: AppTheme.textTheme.headlineMedium?.copyWith(
+                        color: const Color(0xFFC62828),
+                        fontWeight: FontWeight.w800,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: AppTheme.spacing32),
+                    Text(
+                      TranslationService.translate('disclaimer_body_1'),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.textPrimary,
+                        height: 1.4,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: AppTheme.spacing24),
-                    _buildSection(
-                      "3. No Liability / कोई कानूनी जिम्मेदारी नहीं",
-                      "The developer is NOT responsible for any accidents, delays, or physical harm caused by relying on this app.\n"
-                      "इस ऐप पर निर्भर रहने के कारण होने वाली किसी भी दुर्घटना, देरी या शारीरिक नुकसान के लिए डेवलपर जिम्मेदार नहीं है।",
-                      context,
+                    Container(
+                      padding: const EdgeInsets.all(AppTheme.spacing24),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFEBEE), // Subtle background
+                        border: Border.all(color: const Color(0xFFEF9A9A), width: 2), // Danger Border
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        TranslationService.translate('disclaimer_body_2'),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFFC62828),
+                          height: 1.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    const SizedBox(height: AppTheme.spacing24),
-                    _buildSection(
-                      "4. Gateman Duty / गेटमैन का मुख्य कर्तव्य",
-                      "For the Gateman: Updating this app is a secondary task. The primary duty is physical gate operation and safety.\n"
-                      "गेटमैन के लिए: इस ऐप को अपडेट करना एक द्वितीयक कार्य है। आपकी पहली प्राथमिकता गेट का सुरक्षित संचालन है।",
-                      context,
+                    const SizedBox(height: AppTheme.spacing32),
+                    Text(
+                      TranslationService.translate('disclaimer_body_3'),
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: AppTheme.textSecondary,
+                        height: 1.5,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               ),
             ),
+            
+            // Explicit Consent Footer
             Container(
-              padding: const EdgeInsets.all(AppTheme.spacing24),
-              decoration: BoxDecoration(
-                color: AppTheme.cardBackground,
-                boxShadow: [
-                  BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, -4))
-                ],
+              padding: const EdgeInsets.only(
+                left: AppTheme.spacing24,
+                right: AppTheme.spacing24,
+                bottom: AppTheme.spacing32,
+                top: AppTheme.spacing24,
               ),
-              child: SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.primary,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: AppTheme.borderRadiusDefault),
-                  ),
-                  onPressed: () => _acceptTerms(context),
-                  child: Text(
-                    "I Agree / मैं सहमत हूँ",
-                    style: AppTheme.textTheme.titleLarge?.copyWith(color: Colors.white),
-                  ),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(color: AppTheme.borderDefault, width: 1.0),
                 ),
+              ),
+              child: Column(
+                children: [
+                  // Primary Agree Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _isLoading ? null : _handleAgree,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primary, // #E65100
+                        disabledBackgroundColor: AppTheme.primary.withValues(alpha: 0.6),
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: _isLoading 
+                          ? const SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 3,
+                              ),
+                            )
+                          : Text(
+                              TranslationService.translate('agree_button'),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: AppTheme.spacing16),
+                  
+                  // Secondary Outline Disagree Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: _handleDisagree,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: const Color(0xFFC62828), // Danger Text
+                        side: const BorderSide(color: Color(0xFFC62828), width: 1.5),
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child: Text(
+                        TranslationService.translate('disagree_button'),
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSection(String title, String body, BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: AppTheme.textTheme.titleMedium?.copyWith(color: AppTheme.danger)),
-        const SizedBox(height: AppTheme.spacing8),
-        Text(body, style: AppTheme.textTheme.bodyLarge?.copyWith(height: 1.5)),
-      ],
     );
   }
 }

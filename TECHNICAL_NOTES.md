@@ -113,3 +113,51 @@ Step Desugaring Version Bump — No deviations from spec.
 **Reason:** The Flutter/Dart engine and FCM rely on dynamic String intents to summon audio files located natively inside the project payload. Because the Android compiler detects zero static Java/Kotlin references to the `.mp3` asset during `--release` compilation, it incorrectly assumes it is dead-code and strips the `.mp3`. `keep.xml` forces static retention entirely bypassing the analyzer.
 **Impact:** `flutter build apk --release` executes perfectly while fully integrating custom audio capabilities globally.
 ---
+
+Step Gateman Registration UI Phase 1 — No deviations from spec.
+
+---
+
+Step Gateman Registration UI Phase 2 — No deviations from spec.
+
+---
+
+Step Gateman Registration UI Phase 3 — No deviations from spec.
+
+---
+
+## Strict Disclaimer Routing Pivot
+**Decision:** Overhauled startup `hasAcceptedTC` boolean validators forcing unauthenticated flows strictly against `DisclaimerScreen`. Hard-deleted all `/gateman_registrations` interfaces entirely.
+**Reason:** Mitigates severe functional safety responsibilities natively by eliminating physical user-registration liabilities structurally. The app provides asynchronous telemetry locally enforcing strict hardware-decoupled logic organically.
+**Impact:** App complies solely as a community tool eliminating official Indian Railways misrepresentation.
+---
+
+## Strict Consent Notification Triggers
+**Decision:** Deferred FCM Topic Subscriptions decoupling them from `main.dart` runtime logic, locking executions completely behind explicit asynchronous button evaluations natively.
+**Reason:** Ensures strictly robust GDPR-compliance and mitigates liabilities enforcing pure local consent before server traffic establishes handshakes natively.
+**Impact:** Splash screens no longer trap notification permission locks natively preventing iOS-style consent traps.
+---
+
+## Device Consent Audit Tracking
+**Decision:** Pushed asynchronous `logConsent()` Firebase queries actively saving `_fcm.getToken()` hashes onto a dedicated NoSQL node (`/consent_logs`) prior to home-screen loading natively.
+**Reason:** Because RailAlert removed explicit Gateman forms, linking telemetry explicitly to an unauthenticated ID protects administrators via verifiable digital tokens verifying positive disclaimer evaluations natively.
+**Impact:** `FirebaseDatabase` creates scalable telemetry mappings directly matching user compliance.
+---
+
+## Centralized Primary Consent
+**Decision:** Collapsed inline Dashboard legal links into the root Application entry point permanently binding `logConsent()` exclusively across the primary Application load stream `disclaimer_screen.dart`.
+**Reason:** Resolves UI redundancies inherently mapping exact permissions purely around application invocation structurally preventing deep-link bypasses.
+**Impact:** `CommuterDashboardScreen` strictly maintains functional visual bounds organically without secondary UI noise.
+---
+
+## Static Dictionary Bilingual State Management
+**Decision:** Abstracted all primary UI text logic onto `TranslationService` explicitly routing cold-boot users directly onto `LanguageSelectionScreen` securely mapping an `en`/`hi` state value entirely natively via `ValueNotifier`.
+**Reason:** RailAlert must be maximally accessible to hyper-local demographics. The use of a static hash-map avoids heavy dependency inclusions like `easy_localization` minimizing binary sizes.
+**Impact:** `ValueNotifier` hooks avoid complex provider trees natively securely loading language constraints inherently.
+---
+
+## Strictly Read-Only Application Binary
+**Decision:** Fully extracted administrative `onTap` listener logic and fully erased all Gateman `admin_screen.dart` dependencies organically. 
+**Reason:** Separating the commuter UI block strictly limits legal responsibilities natively. By hard-deleting the components, we secure the binary strictly into a one-way telemetry receiver preventing any local device from manipulating `/gate_status` vectors dynamically.
+**Impact:** `AppLogo` and `SplashScreen` operate statically devoid of session manipulation logic perfectly executing the `CommuterDashboardScreen`.
+---

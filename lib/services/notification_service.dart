@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import '../config/app_constants.dart';
 import '../config/secrets.dart';
@@ -26,6 +27,22 @@ class NotificationService {
       });
     } catch (e) {
       debugPrint("Error initializing FCM: $e");
+    }
+  }
+
+  Future<void> logConsent() async {
+    try {
+      final token = await _fcm.getToken();
+      if (token != null) {
+        await FirebaseDatabase.instance.ref().child('consent_logs').push().set({
+          'fcm_token': token,
+          'agreed_at': ServerValue.timestamp,
+          'platform': 'android',
+        });
+        debugPrint("Consent logged natively for FCM block");
+      }
+    } catch (e) {
+      debugPrint("Silent fail: Could not log consent - $e");
     }
   }
 

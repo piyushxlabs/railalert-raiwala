@@ -8,7 +8,7 @@ import 'config/firebase_options.dart';
 import 'theme/app_theme.dart';
 import 'screens/splash_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'services/notification_service.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 @pragma('vm:entry-point')
@@ -41,8 +41,7 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  // Initialize FCM and request permissions (fire-and-forget to avoid splash screen deadlock)
-  NotificationService().initFCM();
+  // FCM Initialization deferred to Explicit Consent Gate (LegalDisclaimerScreen)
 
   // Enable offline persistence for Direct writes/reads
   FirebaseDatabase.instance.setPersistenceEnabled(true);
