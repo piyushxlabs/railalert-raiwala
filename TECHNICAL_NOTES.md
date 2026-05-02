@@ -161,3 +161,9 @@ Step Gateman Registration UI Phase 3 — No deviations from spec.
 **Reason:** Separating the commuter UI block strictly limits legal responsibilities natively. By hard-deleting the components, we secure the binary strictly into a one-way telemetry receiver preventing any local device from manipulating `/gate_status` vectors dynamically.
 **Impact:** `AppLogo` and `SplashScreen` operate statically devoid of session manipulation logic perfectly executing the `CommuterDashboardScreen`.
 ---
+
+## Model Case-Insensitivity & Stream Caching
+**Decision:** Updated `GateStatusModel.fromJson` to use `.toLowerCase()` instead of strict literal matching, and migrated `_gateService.statusStream` into an `initState` cache.
+**Reason:** The standalone Gateman App pushes lowercase payloads (`'alert'`). The commuter app previously failed the strict uppercase match (`'ALERT'`) silently dropping back to `open` (making the UI appear broken/non-reactive). Furthermore, caching the stream prevents `StreamBuilder` from rapidly tearing down and rebuilding Firebase network connections every time the UI ticks an animation frame natively.
+**Impact:** The Commuter Dashboard securely reacts to the Admin App payloads instantly without breaching `<RULE[flutter-architecture-rules.md]>`.
+---

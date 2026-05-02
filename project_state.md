@@ -1,4 +1,4 @@
-- Last Completed Step: Admin Backdoor Deletion Phase
-- Implemented Features: Completely stripped administrative privileges, UI routes, and file assets. The app compiles as a secure, one-way telemetry receiver strictly compliant natively.
-- Pending Next Step: Final Review
+- Last Completed Step: Realtime Status Listener Fix
+- Implemented Features: Fixed string-case parsing in models and hardened `StreamBuilder` subscriptions to correctly capture dynamic payloads from the standalone Admin App.
+- Pending Next Step: Final Testing
 - Known Issues / Blockers: None

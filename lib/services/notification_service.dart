@@ -7,29 +7,35 @@ import '../config/app_constants.dart';
 import '../config/secrets.dart';
 import '../models/gate_status.dart';
 
+/// NotificationService handles FCM topic subscription and consent logging.
+///
+/// The actual local notification display logic has been moved to main.dart
+/// so it can be shared safely between the foreground (onMessage) and the
+/// background isolate (_firebaseMessagingBackgroundHandler).
+///
+/// This service is intentionally kept lightweight — it does NOT call
+/// flutter_local_notifications directly; that runs in main.dart.
 class NotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
+  /// Request permission and subscribe to the gate-status FCM topic.
+  /// Called explicitly after the user accepts the legal disclaimer.
   Future<void> initFCM() async {
     try {
-      NotificationSettings settings = await _fcm.requestPermission();
+      final NotificationSettings settings = await _fcm.requestPermission();
+
       if (settings.authorizationStatus == AuthorizationStatus.authorized) {
         await _fcm.subscribeToTopic(AppConstants.fcmTopicGateStatus);
-        debugPrint("Subscribed to FCM topic: ${AppConstants.fcmTopicGateStatus}");
+        debugPrint('[NotificationService] Subscribed to FCM topic: ${AppConstants.fcmTopicGateStatus}');
       } else {
-        debugPrint("FCM Permission denied/ignored");
+        debugPrint('[NotificationService] FCM permission denied/ignored by user.');
       }
-
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        // Foreground messages: We rely on the DB Realtime listeners for data updates.
-        // Step 17 will introduce StatusSnackbar to hook into this foreground UI later.
-        debugPrint("Foreground message received: ${message.notification?.title}");
-      });
     } catch (e) {
-      debugPrint("Error initializing FCM: $e");
+      debugPrint('[NotificationService] Error in initFCM: $e');
     }
   }
 
+  /// Log FCM consent token to Firebase Realtime Database.
   Future<void> logConsent() async {
     try {
       final token = await _fcm.getToken();
@@ -39,13 +45,16 @@ class NotificationService {
           'agreed_at': ServerValue.timestamp,
           'platform': 'android',
         });
-        debugPrint("Consent logged natively for FCM block");
+        debugPrint('[NotificationService] Consent logged for FCM token.');
       }
     } catch (e) {
-      debugPrint("Silent fail: Could not log consent - $e");
+      debugPrint('[NotificationService] Silent fail: Could not log consent — $e');
     }
   }
 
+  /// Trigger a push notification via the Vercel serverless backend.
+  /// Vercel now sends a DATA-ONLY payload so the device's local notification
+  /// logic (in main.dart) can select the correct language + sound channel.
   Future<void> sendDirectPushNotification(GateStatus newStatus) async {
     // Guard: skip if secret key is unconfigured (dev environment)
     if (Secrets.vercelSecretKey == 'REPLACE_WITH_VERCEL_SECRET_KEY' ||
@@ -54,7 +63,6 @@ class NotificationService {
       return;
     }
 
-    // Convert enum to the string the Vercel backend expects
     final String statusStr;
     if (newStatus == GateStatus.alert) {
       statusStr = 'ALERT';
@@ -64,7 +72,7 @@ class NotificationService {
       statusStr = 'OPEN';
     }
 
-    // Fire-and-forget: UI must never block or crash on notification failure
+    // Fire-and-forget: notification failure must never block gate status UX
     try {
       final response = await http.post(
         Uri.parse(AppConstants.vercelNotifyUrl),
@@ -76,14 +84,11 @@ class NotificationService {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        debugPrint('[NotificationService] Vercel FCM dispatch OK for status=$statusStr');
+        debugPrint('[NotificationService] Vercel FCM dispatch OK — status=$statusStr');
       } else {
-        debugPrint(
-          '[NotificationService] Vercel responded ${response.statusCode}: ${response.body}',
-        );
+        debugPrint('[NotificationService] Vercel ${response.statusCode}: ${response.body}');
       }
     } catch (e) {
-      // Never rethrow — a notification failure must not affect gate status UX
       debugPrint('[NotificationService] Vercel POST exception: $e');
     }
   }

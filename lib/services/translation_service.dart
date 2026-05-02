@@ -39,6 +39,15 @@ class TranslationService {
       'gate_alert_subtitle': 'Gate closing soon — plan your route',
       'gate_closed': 'GATE CLOSED',
       'gate_closed_subtitle': 'Wait or take an alternate route',
+      'dev_appbar_title': 'About the Developer',
+      'dev_tagline': 'Son of Raiwala • Building for the Community',
+      'dev_quote': "We've all felt the frustration of being stuck at the Raiwala fatak, watching the clock tick and feeling helpless. I built RailAlert not as an engineer, but as a local who wanted to give our community its time back. This app is my small gift to my hometown. Let's make our everyday journeys a little smoother, together.",
+      'dev_btn_instagram_title': 'Follow the Journey',
+      'dev_btn_instagram_subtitle': '@lost.in.piyush',
+      'dev_btn_linkedin_title': 'Connect Professionally',
+      'dev_btn_linkedin_subtitle': "Let's build together",
+      'dev_btn_email_title': 'Drop a Message',
+      'dev_btn_email_subtitle': 'Feedback & Suggestions',
     },
     'hi': {
       'language_selection_title': 'भाषा चुनें',
@@ -62,6 +71,15 @@ class TranslationService {
       'gate_alert_subtitle': 'गेट जल्द ही बंद हो जाएगा - अपना रास्ता चुनें',
       'gate_closed': 'गेट बंद है',
       'gate_closed_subtitle': 'प्रतीक्षा करें या कोई वैकल्पिक रास्ता लें',
+      'dev_appbar_title': 'डेवलपर के बारे में',
+      'dev_tagline': 'रायवाला का बेटा • समुदाय के लिए बना रहा है',
+      'dev_quote': 'हम सभी ने रायवाला फाटक पर फंसने की निराशा महसूस की है, घड़ी देखते हुए और बेबस महसूस करते हुए। मैंने RailAlert एक इंजीनियर के रूप में नहीं, बल्कि एक स्थानीय निवासी के रूप में बनाया जो हमारे समुदाय को उसका समय वापस देना चाहता था। यह ऐप मेरे गृहनगर को मेरा छोटा सा उपहार है। आइए मिलकर अपनी रोज़ाना की यात्राओं को थोड़ा आसान बनाएं।',
+      'dev_btn_instagram_title': 'यात्रा का अनुसरण करें',
+      'dev_btn_instagram_subtitle': '@lost.in.piyush',
+      'dev_btn_linkedin_title': 'पेशेवर रूप से जुड़ें',
+      'dev_btn_linkedin_subtitle': 'साथ मिलकर कुछ बनाएं',
+      'dev_btn_email_title': 'संदेश भेजें',
+      'dev_btn_email_subtitle': 'प्रतिक्रिया और सुझाव',
     }
   };
 }

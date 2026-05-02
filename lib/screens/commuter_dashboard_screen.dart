@@ -23,6 +23,8 @@ class _CommuterDashboardScreenState extends State<CommuterDashboardScreen>
   late AnimationController _breathController;
   late Animation<double> _breathAnim;
 
+  late Stream<GateStatusModel?> _statusStream;
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +35,8 @@ class _CommuterDashboardScreenState extends State<CommuterDashboardScreen>
     _breathAnim = Tween<double>(begin: 1.0, end: 1.025).animate(
       CurvedAnimation(parent: _breathController, curve: Curves.easeInOut),
     );
+
+    _statusStream = _gateService.statusStream;
   }
 
   @override
@@ -95,7 +99,7 @@ class _CommuterDashboardScreenState extends State<CommuterDashboardScreen>
                   bottom: AppTheme.spacing24,
                 ),
                 child: StreamBuilder<GateStatusModel?>(
-                  stream: _gateService.statusStream,
+                  stream: _statusStream,
                   builder: (context, snapshot) {
                     return GateStatusCard(statusModel: snapshot.data);
                   },

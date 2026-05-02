@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
+import '../services/translation_service.dart';
 
-// ── Color constants matching Ui_Desgin.md exactly ────────────────────────────
+// ── Color constants matching UI_DESIGN_SYSTEM.md exactly ────────────────────
 const _kPrimary = Color(0xFFE65100);
 const _kPrimarySubtle = Color(0xFFFBE9E7);
 const _kTextPrimary = Color(0xFF212121);
 const _kTextSecondary = Color(0xFF757575);
 const _kTextDisabled = Color(0xFFBDBDBD);
+
+// ── Brand colors ─────────────────────────────────────────────────────────────
+const _kInstagramStart = Color(0xFF833AB4);
+const _kInstagramMid = Color(0xFFE1306C);
+const _kInstagramEnd = Color(0xFFF77737);
+const _kLinkedIn = Color(0xFF0077B5);
+const _kGmailRed = Color(0xFFEA4335);
 
 class DeveloperProfileScreen extends StatefulWidget {
   const DeveloperProfileScreen({super.key});
@@ -18,6 +27,7 @@ class DeveloperProfileScreen extends StatefulWidget {
 
 class _DeveloperProfileScreenState extends State<DeveloperProfileScreen>
     with TickerProviderStateMixin {
+
   Future<void> _launchUrl(BuildContext context, String urlString) async {
     final Uri url = Uri.parse(urlString);
     try {
@@ -36,123 +46,140 @@ class _DeveloperProfileScreenState extends State<DeveloperProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.pageBackground,
-      appBar: AppBar(
-        title: const Text('About the Developer'),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        foregroundColor: _kTextPrimary,
-        centerTitle: true,
-        surfaceTintColor: Colors.transparent,
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppTheme.spacing24,
-            vertical: AppTheme.spacing24,
+    return ValueListenableBuilder<String>(
+      valueListenable: TranslationService.currentLanguage,
+      builder: (context, lang, child) {
+        return Scaffold(
+          backgroundColor: AppTheme.pageBackground,
+          appBar: AppBar(
+            title: Text(TranslationService.translate('dev_appbar_title')),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            foregroundColor: _kTextPrimary,
+            centerTitle: true,
+            surfaceTintColor: Colors.transparent,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // ── Profile Picture ────────────────────────────────────────────
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 4),
-                  boxShadow: [
-                    BoxShadow(
-                      color: _kPrimary.withValues(alpha: 0.18),
-                      blurRadius: 28,
-                      spreadRadius: 8,
-                      offset: const Offset(0, 8),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppTheme.spacing24,
+                vertical: AppTheme.spacing24,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // ── Profile Picture ───────────────────────────────────────
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 4),
+                      boxShadow: [
+                        BoxShadow(
+                          color: _kPrimary.withValues(alpha: 0.18),
+                          blurRadius: 28,
+                          spreadRadius: 8,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: const CircleAvatar(
-                  radius: 60,
-                  backgroundColor: _kPrimarySubtle,
-                  backgroundImage: AssetImage('assets/images/piyush.jpg'),
-                ),
-              ),
-              const SizedBox(height: AppTheme.spacing24),
-
-              // ── Name ───────────────────────────────────────────────────────
-              Text(
-                'Piyush Jaguri',
-                style: AppTheme.textTheme.displayLarge?.copyWith(
-                  color: _kTextPrimary,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 28,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: AppTheme.spacing12),
-
-              // ── Premium tagline chip ──────────────────────────────────────
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  color: _kPrimarySubtle,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  'Son of Raiwala • Building for the Community',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: _kPrimary,
+                    child: const CircleAvatar(
+                      radius: 60,
+                      backgroundColor: _kPrimarySubtle,
+                      backgroundImage: AssetImage('assets/images/piyush.jpg'),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: AppTheme.spacing24),
+
+                  // ── Name ──────────────────────────────────────────────────
+                  Text(
+                    'Piyush Jaguri',
+                    style: AppTheme.textTheme.displayLarge?.copyWith(
+                      color: _kTextPrimary,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 28,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: AppTheme.spacing12),
+
+                  // ── Premium tagline chip ──────────────────────────────────
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                    decoration: BoxDecoration(
+                      color: _kPrimarySubtle,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      TranslationService.translate('dev_tagline'),
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: _kPrimary,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: AppTheme.spacing32),
+
+                  // ── Emotional Quote Card ──────────────────────────────────
+                  _buildQuoteCard(),
+                  const SizedBox(height: 40.0),
+
+                  // ── Social Buttons ────────────────────────────────────────
+                  _AnimatedSocialButton(
+                    title: TranslationService.translate('dev_btn_instagram_title'),
+                    subtitle: TranslationService.translate('dev_btn_instagram_subtitle'),
+                    iconGradient: const LinearGradient(
+                      colors: [_kInstagramStart, _kInstagramMid, _kInstagramEnd],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    iconWidget: const FaIcon(
+                      FontAwesomeIcons.instagram,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                    onTap: () => _launchUrl(
+                        context, 'https://www.instagram.com/lost.in.piyush'),
+                  ),
+                  const SizedBox(height: AppTheme.spacing12),
+
+                  _AnimatedSocialButton(
+                    title: TranslationService.translate('dev_btn_linkedin_title'),
+                    subtitle: TranslationService.translate('dev_btn_linkedin_subtitle'),
+                    iconGradient: null,
+                    iconSolidColor: _kLinkedIn,
+                    iconWidget: const FaIcon(
+                      FontAwesomeIcons.linkedinIn,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                    onTap: () => _launchUrl(
+                        context, 'https://www.linkedin.com/in/piyushxlabs'),
+                  ),
+                  const SizedBox(height: AppTheme.spacing12),
+
+                  _AnimatedSocialButton(
+                    title: TranslationService.translate('dev_btn_email_title'),
+                    subtitle: TranslationService.translate('dev_btn_email_subtitle'),
+                    iconGradient: null,
+                    iconSolidColor: _kGmailRed,
+                    iconWidget: const FaIcon(
+                      FontAwesomeIcons.envelope,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                    onTap: () =>
+                        _launchUrl(context, 'mailto:piyushjaguri13@gmail.com'),
+                  ),
+
+                  const SizedBox(height: AppTheme.spacing32),
+                ],
               ),
-              const SizedBox(height: AppTheme.spacing32),
-
-              // ── Emotional Quote Card ───────────────────────────────────────
-              _buildQuoteCard(),
-              const SizedBox(height: 40.0),
-
-              // ── Social Buttons ─────────────────────────────────────────────
-              _AnimatedSocialButton(
-                title: 'Follow the Journey',
-                subtitle: '@lost.in.piyush',
-                iconGradient: const LinearGradient(
-                  colors: [Color(0xFFE1306C), Color(0xFFF77737)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                icon: Icons.camera_alt_outlined,
-                onTap: () => _launchUrl(
-                    context, 'https://www.instagram.com/lost.in.piyush'),
-              ),
-              const SizedBox(height: AppTheme.spacing8),
-
-              _AnimatedSocialButton(
-                title: 'Connect Professionally',
-                subtitle: "Let's build together",
-                iconGradient: null,
-                iconSolidColor: const Color(0xFF0077B5),
-                icon: Icons.work_outline,
-                onTap: () => _launchUrl(
-                    context, 'https://www.linkedin.com/in/piyushxlabs'),
-              ),
-              const SizedBox(height: AppTheme.spacing8),
-
-              _AnimatedSocialButton(
-                title: 'Drop a Message',
-                subtitle: 'Feedback & Suggestions',
-                iconGradient: null,
-                iconSolidColor: const Color(0xFFEA4335),
-                icon: Icons.mail_outline,
-                onTap: () =>
-                    _launchUrl(context, 'mailto:piyushjaguri13@gmail.com'),
-              ),
-
-              const SizedBox(height: AppTheme.spacing32),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -195,9 +222,9 @@ class _DeveloperProfileScreenState extends State<DeveloperProfileScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20), // Space below decorative quote
-                const Text(
-                  "We've all felt the frustration of being stuck at the Raiwala fatak, watching the clock tick and feeling helpless. I built RailAlert not as an engineer, but as a local who wanted to give our community its time back. This app is my small gift to my hometown. Let's make our everyday journeys a little smoother, together.",
-                  style: TextStyle(
+                Text(
+                  TranslationService.translate('dev_quote'),
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                     color: Color(0xFF424242),
@@ -226,12 +253,12 @@ class _DeveloperProfileScreenState extends State<DeveloperProfileScreen>
   }
 }
 
-// ── Private tactile animated social button ─────────────────────────────────
+// ── Private tactile animated social button ────────────────────────────────────
 class _AnimatedSocialButton extends StatefulWidget {
   const _AnimatedSocialButton({
     required this.title,
     required this.subtitle,
-    required this.icon,
+    required this.iconWidget,
     required this.onTap,
     this.iconGradient,
     this.iconSolidColor,
@@ -239,7 +266,7 @@ class _AnimatedSocialButton extends StatefulWidget {
 
   final String title;
   final String subtitle;
-  final IconData icon;
+  final Widget iconWidget;
   final VoidCallback onTap;
   final LinearGradient? iconGradient;
   final Color? iconSolidColor;
@@ -274,27 +301,35 @@ class _AnimatedSocialButtonState extends State<_AnimatedSocialButton> {
             : const Duration(milliseconds: 200),
         child: Card(
           elevation: 2,
-          margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+          margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
             child: Row(
               children: [
-                // Icon container 42×42
+                // Icon container 48×48 with gradient or solid color
                 Container(
-                  width: 42,
-                  height: 42,
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(14),
                     gradient: widget.iconGradient,
                     color: widget.iconGradient == null
                         ? widget.iconSolidColor
                         : null,
+                    boxShadow: [
+                      BoxShadow(
+                        color: (widget.iconSolidColor ?? _kInstagramEnd)
+                            .withValues(alpha: 0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
-                  child: Icon(widget.icon, color: Colors.white, size: 22),
+                  child: Center(child: widget.iconWidget),
                 ),
                 const SizedBox(width: 16),
                 // Title + subtitle
@@ -310,7 +345,7 @@ class _AnimatedSocialButtonState extends State<_AnimatedSocialButton> {
                           color: _kTextPrimary,
                         ),
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: 3),
                       Text(
                         widget.subtitle,
                         style: const TextStyle(

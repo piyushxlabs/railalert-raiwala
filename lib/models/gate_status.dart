@@ -13,9 +13,9 @@ class GateStatusModel {
 
   factory GateStatusModel.fromJson(Map<dynamic, dynamic> statusJson, {bool isGatemanActive = true}) {
     GateStatus parsedStatus = GateStatus.open;
-    final statusStr = statusJson['status'] as String?;
-    if (statusStr == 'ALERT') parsedStatus = GateStatus.alert;
-    if (statusStr == 'CLOSED') parsedStatus = GateStatus.closed;
+    final statusStr = (statusJson['status'] as String?)?.toLowerCase();
+    if (statusStr == 'alert') parsedStatus = GateStatus.alert;
+    if (statusStr == 'closed') parsedStatus = GateStatus.closed;
 
     final timestamp = statusJson['updated_at'] as int?;
     final updatedAt = timestamp != null 

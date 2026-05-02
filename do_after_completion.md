@@ -1,32 +1,31 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # STEP COMPLETION CHECKLIST
-# Admin Backdoor Deletion Phase
+# Realtime Status Listener Fix
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ⏰ BEFORE running the next prompt — do these first:
 
-[ ] Press `R` in your terminal or trigger a "Hot Restart" fully reloading the widget trees inherently avoiding trailing dead state maps securely.
+[ ] Press `R` in your terminal or trigger a "Hot Restart" fully reloading the widget trees inherently capturing the newly cached `_statusStream` in `initState`.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ WHAT GOT BUILT THIS STEP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[ ] Stripped `AppLogo`: The Raiwala train icon inside the Commuter Dashboard is fully stripped of the `GestureDetector` blocking secret UI triggers permanently.
-[ ] Cleaned Routing: `splash_screen.dart` strictly resolves against Commuter endpoints regardless of latent `SharedPreferences` session data structurally.
-[ ] Hardware Deletion: `admin_screen.dart` and `pin_entry_screen.dart` are fully eradicated out of the file system ensuring a highly secure compiler build natively.
+[ ] Model Hardening: `GateStatusModel.fromJson` now dynamically parses `.toLowerCase()` payloads seamlessly binding to the Admin App's lowercase database writes.
+[ ] Stream Builder Cache: `CommuterDashboardScreen` explicitly binds the stream in `initState` completely terminating rapid Firebase network-detach loops.
+[ ] Architectural Integrity: Strictly protected `<RULE[flutter-architecture-rules.md]>` by keeping `FirebaseDatabase.instance` securely abstracted away inside `GateService`.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🧪 TESTING & VERIFICATION
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Test 1 — Commuter Dashboard Stability Test:
-[ ] Proceed to the `CommuterDashboardScreen` organically via your Emulator/Hardware Device.
-[ ] Aggressively tap the Railway Logo inside the App Bar at the top of the screen (5, 6, 7 times).
-✅ Expected: **NOTHING HAPPENS.** The widget acts securely as a static visual bounding-box perfectly ignoring touch inputs dynamically.
-
-Test 2 — Compiler Check:
-[ ] Observe the terminal running your `flutter run` command natively.
-✅ Expected: The application does not crash. No missing import loops or errors render in the debugger logs natively. 
+Test 1 — Commuter Dashboard Reactive Test:
+[ ] Open your Firebase Realtime Database Console in your browser.
+[ ] Go to the `gate_status` node.
+[ ] Manually change the `status` value to `alert` (lowercase).
+✅ Expected: The Commuter App UI instantly flashes the Orange "⚠ TRAIN COMING" card in real-time.
+[ ] Change it to `closed` (lowercase).
+✅ Expected: The UI instantly flashes the Red "GATE CLOSED" card.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📦 GIT COMMIT
@@ -35,7 +34,7 @@ Test 2 — Compiler Check:
 
 ```
 git add .
-git commit -m "Refactor: completely remove Gateman/Admin backdoors structuring the codebase strictly as a read-only commuter UI receiver safely"
+git commit -m "Fix: resolve case-sensitive GateStatus parser bug and cache UI StreamBuilder to restore realtime database listening organically"
 ```
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

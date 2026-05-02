@@ -1075,3 +1075,26 @@
 **Verification Result:**
 - `flutter analyze` completed safely returning 0 errors. Dashboard executes gracefully devoid of backend triggers natively.
 ---
+
+## Realtime Status Listener Fix
+**Date:** 2026-04-30
+**Status:** Complete
+
+**What was implemented:**
+- Fixed `GateStatusModel.fromJson` to safely parse `.toLowerCase()` strings. The standalone Gateman Admin app was writing `{'status': 'alert'}` (lowercase), while the commuter app was rigidly looking for `'ALERT'` (uppercase), forcing a fallback to `'open'` rendering the UI static.
+- Cached `_gateService.statusStream` inside `initState` on `CommuterDashboardScreen` to prevent `StreamBuilder` from forcefully destroying and recreating network listeners on every localized UI rebuild (e.g. `_breathAnim` ticks).
+- Preserved strict `<RULE[flutter-architecture-rules.md]>` separation: Firebase logic remains securely isolated inside `GateService` instead of directly polling `FirebaseDatabase.instance` from `CommuterDashboardScreen`.
+
+**Files Created:**
+- None
+
+**Files Modified:**
+- `lib/models/gate_status.dart`
+- `lib/screens/commuter_dashboard_screen.dart`
+
+**Packages Installed:**
+- None
+
+**Verification Result:**
+- The Commuter App is now perfectly reactive to lowercase or uppercase `/gate_status` payloads organically without violating structural architecture.
+---

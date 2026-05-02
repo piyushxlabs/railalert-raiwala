@@ -71,14 +71,14 @@ module.exports = async function handler(req, res) {
 
   // ── Send FCM message to topic ─────────────────────────────────────────────
   const message = {
-    notification: { title, body },
+    data: {
+      status: newStatus,
+      title: title,
+      body: body,
+    },
     topic: FCM_TOPIC,
     android: {
       priority: 'high',
-      notification: {
-        sound: 'train_horn',
-        channelId: 'gate_status_channel',
-      },
     },
   };
 

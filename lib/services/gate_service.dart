@@ -17,19 +17,31 @@ class GateService {
     final statusRef = _db.ref(AppConstants.databaseNodeGateStatus);
     final configRef = _db.ref(AppConstants.databaseNodeAppConfig);
 
-    final statusStream = statusRef.onValue.map(
-      (event) => event.snapshot.value as Map<dynamic, dynamic>?,
-    );
+    final statusStream = statusRef.onValue.map((event) {
+      try {
+        final val = event.snapshot.value;
+        if (val is Map) return val;
+        return null;
+      } catch (e) {
+        debugPrint("Error parsing status node: $e");
+        return null;
+      }
+    });
 
-    // startWith(null) is CRITICAL: if /app_config node does not exist in Firebase,
-    // the configStream never emits — and combineLatest2 blocks forever, causing
-    // the blank grey dashboard bug. startWith(null) makes it emit immediately so
-    // combineLatest2 can fire as soon as statusStream delivers its first value.
-    final configStream = configRef.onValue
-        .map((event) => event.snapshot.value as Map<dynamic, dynamic>?)
-        .startWith(null);
+    // startWith(null) makes it emit immediately so combineLatest2 can fire 
+    // as soon as statusStream delivers its first value.
+    final configStream = configRef.onValue.map((event) {
+      try {
+        final val = event.snapshot.value;
+        if (val is Map) return val;
+        return null;
+      } catch (e) {
+        debugPrint("Error parsing config node: $e");
+        return null;
+      }
+    }).startWith(null);
 
-    return Rx.combineLatest2(statusStream, configStream, (statusData, configData) {
+    return Rx.combineLatest2(statusStream, configStream, (Map? statusData, Map? configData) {
       bool gatemanActive = true;
       if (configData != null && configData['gateman_active'] != null) {
         gatemanActive = configData['gateman_active'] == true;
@@ -46,7 +58,8 @@ class GateService {
         );
       }
 
-      return GateStatusModel.fromJson(statusData, isGatemanActive: gatemanActive);
+      final safeStatusData = Map<dynamic, dynamic>.from(statusData);
+      return GateStatusModel.fromJson(safeStatusData, isGatemanActive: gatemanActive);
     });
   }
 
